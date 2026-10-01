@@ -1,0 +1,118 @@
+import type { Course } from '../types';
+// Development fixtures. Never used with a configured database or in production.
+export const demoCourses: Course[] = [
+  {
+    id: '10000000-0000-4000-8000-000000000001',
+    slug: 'desarrollo-web',
+    title: 'Desarrollo web de cero a producción',
+    subtitle: 'Convertí tus ideas en experiencias que funcionan.',
+    description:
+      'Construí una aplicación web completa con HTML, CSS, JavaScript y React. Un recorrido práctico, con proyectos que crecen con vos, desde la primera línea de código hasta tu primer despliegue.',
+    category: 'Desarrollo',
+    level: 'Inicial',
+    price_cents: 5490000,
+    instructor: 'Lucía Méndez',
+    learning_outcomes: [
+      'Crear interfaces accesibles y adaptables',
+      'Dominar las bases de JavaScript y React',
+      'Conectar tu aplicación con una API',
+      'Publicar un proyecto de tu portfolio',
+    ],
+    requirements: [
+      'Una computadora con conexión a internet',
+      'Ganas de aprender; no necesitás experiencia previa',
+    ],
+    featured: true,
+    status: 'published',
+    currency: 'ARS',
+    cover_url: null,
+  },
+  {
+    id: '10000000-0000-4000-8000-000000000002',
+    slug: 'diseno-de-producto',
+    title: 'Diseño UX/UI: de la idea al producto',
+    subtitle: 'Diseñá con intención. Creá para las personas.',
+    description:
+      'Aprendé a investigar, prototipar y diseñar productos digitales con un proceso claro y práctico. Llevate un caso de estudio listo para tu portfolio.',
+    category: 'Diseño',
+    level: 'Inicial',
+    price_cents: 4290000,
+    instructor: 'Tomás Ríos',
+    learning_outcomes: [
+      'Investigar necesidades reales',
+      'Diseñar sistemas de componentes',
+      'Crear prototipos interactivos',
+    ],
+    requirements: ['No necesitás experiencia previa'],
+    featured: true,
+    status: 'published',
+    currency: 'ARS',
+    cover_url: null,
+  },
+  {
+    id: '10000000-0000-4000-8000-000000000003',
+    slug: 'datos-con-python',
+    title: 'Análisis de datos con Python',
+    subtitle: 'Encontrá las historias que se esconden en los datos.',
+    description:
+      'Transformá datos en decisiones. Aprendé Python, exploración de datos y visualización con ejercicios aplicados a problemas cotidianos.',
+    category: 'Datos',
+    level: 'Intermedio',
+    price_cents: 5990000,
+    instructor: 'Valentina Paz',
+    learning_outcomes: [
+      'Limpiar y explorar datasets',
+      'Analizar datos con pandas',
+      'Comunicar resultados con gráficos',
+    ],
+    requirements: ['Conocimientos básicos de programación'],
+    featured: true,
+    status: 'published',
+    currency: 'ARS',
+    cover_url: null,
+  },
+  {
+    id: '10000000-0000-4000-8000-000000000004',
+    slug: 'inteligencia-artificial-aplicada',
+    title: 'Inteligencia artificial para tu trabajo',
+    subtitle: 'Menos tareas repetitivas. Más tiempo para crear.',
+    description:
+      'Incorporá herramientas de inteligencia artificial a tu trabajo con criterio. Diseñá instrucciones claras y procesos que puedas revisar y mejorar.',
+    category: 'Inteligencia artificial',
+    level: 'Inicial',
+    price_cents: 3490000,
+    instructor: 'Martín Costa',
+    learning_outcomes: [
+      'Escribir instrucciones efectivas',
+      'Evaluar y verificar resultados',
+      'Crear procesos asistidos por IA',
+    ],
+    requirements: ['Manejo básico de herramientas digitales'],
+    featured: false,
+    status: 'published',
+    currency: 'ARS',
+    cover_url: null,
+  },
+].map((course, i) => ({
+  ...course,
+  modules: [
+    {
+      id: `demo-module-${i}`,
+      course_id: course.id,
+      title: 'Empezá por los fundamentos',
+      position: 0,
+      lessons: [
+        {
+          id: `demo-lesson-${i}`,
+          course_id: course.id,
+          module_id: `demo-module-${i}`,
+          title: 'Introducción y hoja de ruta',
+          description: 'Conocé el recorrido del curso.',
+          duration_seconds: 720,
+          position: 0,
+          is_preview: false,
+        },
+      ],
+    },
+  ],
+}));

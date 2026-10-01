@@ -1,0 +1,63 @@
+.admin-shell {
+  padding-block: 36px 64px;
+}
+.admin-shell h1.page-heading {
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  margin-bottom: 0;
+}
+.admin-shell h2.section-heading {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.admin-shell summary {
+  line-height: 1.6;
+}
+.admin-shell details > summary:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 5px;
+  border-radius: 4px;
+}
+.admin-shell button:disabled {
+  opacity: 0.5;
+}
+.admin-shell .input {
+  min-width: 0;
+}
+.admin-shell .panel {
+  min-width: 0;
+}
+.admin-shell .data-table {
+  min-width: 580px;
+}
+.admin-shell .data-table th {
+  font-size: 12px;
+}
+.admin-shell select option {
+  color: #eff0f6;
+  background: #111522;
+}
+.admin-shell progress {
+  overflow: hidden;
+  border: 0;
+  border-radius: 99px;
+  background: #ffffff10;
+}
+.admin-shell progress::-webkit-progress-bar {
+  background: #ffffff10;
+  border-radius: 99px;
+}
+.admin-shell progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #aa8aff, #8ddde8);
+  border-radius: 99px;
+}
+@media (max-width: 600px) {
+  .admin-shell {
+    padding-block: 24px 48px;
+  }
+  .admin-shell h1.page-heading {
+    font-size: 30px;
+  }
+}
