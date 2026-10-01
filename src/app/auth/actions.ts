@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { appUrl, isSupabaseConfigured } from '@/lib/env';
 import { credentialsSchema, safeNext } from '@/lib/auth-validation';
+import { authFailureDetails, signupErrorMessage } from '@/lib/auth-errors';
 export type AuthState = { error?: string; success?: string };
 export async function authenticate(_previous: AuthState, form: FormData): Promise<AuthState> {
   if (!isSupabaseConfigured())
@@ -41,15 +42,16 @@ export async function authenticate(_previous: AuthState, form: FormData): Promis
     const full_name = String(form.get('full_name') ?? '').trim();
     if (full_name.length < 2 || full_name.length > 160)
       return { error: 'Ingresá tu nombre (entre 2 y 160 caracteres).' };
-    const { error } = await db.auth.signUp({
+    const { data, error } = await db.auth.signUp({
       email,
       password,
       options: { data: { full_name }, emailRedirectTo: `${appUrl()}/auth/callback` },
     });
-    if (error)
-      return {
-        error: 'No se pudo crear la cuenta. Revisá tus datos o intentá ingresar si ya tenés una.',
-      };
+    if (error) {
+      console.error('[auth:signup]', authFailureDetails(error));
+      return { error: signupErrorMessage(error) };
+    }
+    if (data.session) redirect(safeNext(form.get('next')));
     return {
       success: 'Revisá tu correo para verificar la cuenta. Después vas a poder ingresar al aula.',
     };

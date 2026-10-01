@@ -37,6 +37,12 @@ http://localhost:3000/auth/callback
 http://localhost:3000/auth/callback?next=/actualizar-clave
 ```
 
+Sin SMTP propio, el correo predeterminado de Supabase sólo entrega a direcciones de miembros del equipo de la organización y actualmente limita el proyecto a dos mensajes por hora. Un correo externo puede fallar con `email_address_not_authorized`; el límite devuelve `over_email_send_rate_limit`. Configurá el proveedor en Authentication → Email → SMTP Settings para admitir registros de alumnos. Consultá las [restricciones oficiales de SMTP](https://supabase.com/docs/guides/auth/auth-smtp), ya que los límites pueden cambiar.
+
+Si el registro falla, el formulario distingue estos casos sin mostrar mensajes internos del proveedor. El servidor registra `[auth:signup]` con el código y estado HTTP, sin correo, contraseña ni tokens. Un `unexpected_failure` requiere revisar Auth Logs y Postgres Logs del proyecto: puede indicar un fallo del trigger de perfiles o del servicio. No vuelvas a ejecutar `setup.sql` sobre una base que ya tiene las migraciones; primero diagnosticá el error concreto.
+
+`email_address_invalid` indica que Supabase rechaza la dirección, incluyendo dominios de ejemplo o prueba. Registrá el primer administrador con un correo real al que tengas acceso; no uses las direcciones ilustrativas de esta documentación. Referencia: [códigos de error de Auth](https://supabase.com/docs/guides/auth/debugging/error-codes).
+
 La aplicación implementa el intercambio PKCE en `/auth/callback`. Para enlaces de confirmación utilizables en otro navegador, podés usar la ruta `/auth/confirm` y la plantilla de confirmación:
 
 ```html
