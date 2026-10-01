@@ -1,5 +1,12 @@
 # Registro de verificación — 29 de septiembre de 2026
 
+## Actualización — 1 de octubre de 2026
+
+- Proyecto publicado en la rama `main` de [digitalamenitiessas-lang/Cursos-DA](https://github.com/digitalamenitiessas-lang/Cursos-DA). Primer commit: `c085e86`.
+- Verificación previa a la publicación: TypeScript sin errores, 21 pruebas aprobadas y formato correcto.
+- `.env.local` permanece excluido de Git; `.env.example` contiene únicamente nombres de variables y valores de ejemplo sin credenciales.
+- Continúan pendientes la configuración y las pruebas de Supabase, Mercado Pago, Cloudflare Stream y el despliegue Vercel descritas abajo. El registro del 29 de septiembre conserva el estado de aquella entrega local.
+
 ## Ejecutado localmente
 
 - `npm run typecheck`: TypeScript estricto sin errores.
