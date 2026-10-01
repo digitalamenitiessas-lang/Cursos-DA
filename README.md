@@ -46,6 +46,8 @@ Nombre/logo en `src/lib/brand.ts` y `src/components/brand.tsx`; originales de Di
 
 En desarrollo, `/studio-preview` permite revisar la navegación, el efecto Dither Veil, el formulario y las cargas sin iniciar sesión. Está identificado como una vista de diseño, no muestra datos administrativos y desactiva guardados y transferencias. En producción responde 404. El panel operativo `/admin` siempre exige una cuenta verificada con rol administrador.
 
+React Bits también está integrado en el sitio público: Dither Veil en la ilustración interactiva de la portada y Spotlight Card en las tarjetas del catálogo. La portada conserva la ilustración estática sin WebGL o con movimiento reducido; el efecto se carga por separado, pausa fuera de vista y mantiene el scroll nativo en celular. Los componentes adaptados y su licencia están en `src/components/react-bits/`.
+
 ## Modelo de seguridad
 
 `orders` conserva precio/moneda; `payment_attempts` representa cada checkout; `payments` representa estados oficiales consultados a Mercado Pago; `access_grants` representa permisos independientes. Cambios financieros son transaccionales y exclusivos de `service_role`. Ningún formulario admite asignar rol. RLS protege cada consulta directa. Videos tienen metadata separada del temario y tokens temporales; materiales usan bucket privado. Se conservan cursos vendidos al archivarlos.

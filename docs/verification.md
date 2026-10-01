@@ -19,6 +19,14 @@
 
 ## Ejecutado localmente
 
+### React Bits en el sitio público — 1 de octubre de 2026
+
+- La portada pública utiliza Dither Veil en una ilustración propia, con revelado al mover el cursor y expansión al hacer clic. Se reemplazó el Canvas geométrico de esta ruta; la narrativa mantiene el scroll nativo.
+- Las tarjetas compartidas por portada y catálogo incorporan Spotlight Card. Los estilos administrativos se limitaron a sus accesos rápidos para evitar que alteren las tarjetas públicas.
+- La ilustración permanece disponible sin WebGL o con movimiento reducido. El efecto se carga por separado, limita la frecuencia de renderizado y pausa fuera de vista o con la pestaña oculta.
+- Verificación visual en Chrome: escritorio de 1301 px y celular de 390 px, sin desborde horizontal; canvas montado e interacción de clic observada, sin errores de consola. El catálogo conectado estaba vacío, por lo que no se verificó visualmente una tarjeta con un curso real. La alternativa de movimiento reducido se revisó en código.
+- TypeScript, formato y compilación de producción aprobados. Estas comprobaciones locales no verifican la configuración de Vercel ni operaciones de compra o administración.
+
 - `npm run typecheck`: TypeScript estricto sin errores.
 - `npm test`: **21 pruebas aprobadas**. Firmas webhook válidas/falsificadas, binding de ID/query/body, vencimiento, montos en centavos, moneda, cuenta receptora, entorno, referencias, transiciones de pago y deduplicación; redirects locales y verificación de autorización de videos/muestras, duración de tokens y nombres de archivos.
 - `bash supabase/tests/run-local.sh`: **70 aserciones aprobadas en PostgreSQL 17.11**, con las tres migraciones aplicadas desde cero. Crea clúster temporal sólo con socket Unix y lo elimina al terminar. Cubre perfiles aislados, roles inmutables, accesos no comprados, escritura de progreso ajeno rechazada, snapshots de precios, duplicados/eventos atrasados, pendiente→aprobado, devolución, contracargo, reembolso parcial, permisos independientes, preservación de accesos al archivar, reordenamiento y guardado atómico de completado frente a autosaves atrasados.

@@ -16,7 +16,7 @@ export function SpotlightCard({
     ref.current.style.setProperty('--mouse-y', `${event.clientY - rect.top}px`);
   }
   return (
-    <div ref={ref} onPointerMove={move} className={`studio-spotlight ${className}`}>
+    <div ref={ref} onPointerMove={move} className={`spotlight-card ${className}`}>
       {children}
     </div>
   );

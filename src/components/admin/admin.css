@@ -466,7 +466,7 @@
   border: 1px solid #baa0e31a;
   border-radius: 10px;
 }
-.studio-spotlight {
+.studio-shortcuts .spotlight-card {
   position: relative;
   overflow: hidden;
   border: 1px solid #ffffff0c;
@@ -475,7 +475,7 @@
   --mouse-x: 50%;
   --mouse-y: 50%;
 }
-.studio-spotlight:before {
+.studio-shortcuts .spotlight-card:before {
   content: '';
   position: absolute;
   inset: 0;
@@ -488,8 +488,8 @@
   transition: opacity 0.4s;
   pointer-events: none;
 }
-.studio-spotlight:hover:before,
-.studio-spotlight:focus-within:before {
+.studio-shortcuts .spotlight-card:hover:before,
+.studio-shortcuts .spotlight-card:focus-within:before {
   opacity: 1;
 }
 .studio-section-title {
@@ -1048,7 +1048,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .studio-spotlight:before {
+  .studio-shortcuts .spotlight-card:before {
     display: none;
   }
   .studio-course-card,

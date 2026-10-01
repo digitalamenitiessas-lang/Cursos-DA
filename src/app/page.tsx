@@ -4,7 +4,7 @@ import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { CourseCard } from '@/components/course-card';
 import { Button } from '@/components/ui/button';
-import { InteractiveField } from '@/components/home/interactive-field';
+import { LearningArtwork } from '@/components/home/learning-artwork';
 import { ScrollJourney } from '@/components/home/scroll-journey';
 import { getCourses } from '@/lib/data/courses';
 import { isDemo } from '@/lib/env';
@@ -17,7 +17,6 @@ export default async function Home() {
   return (
     <div className="home-v2">
       <div className="landing-intro">
-        <InteractiveField />
         <SiteHeader />
         <main id="contenido">
           <section className="hero-v2 container-wide">
@@ -27,27 +26,30 @@ export default async function Home() {
               </span>
               <span className="hero-edition">A TU RITMO / DESDE CUALQUIER LUGAR</span>
             </div>
-            <div className="hero-v2-copy">
-              <h1>
-                El futuro
-                <br />
-                se <span>aprende.</span>
-              </h1>
-              <p>
-                Habilidades para lo que viene.
-                <br />
-                Un nuevo camino, a tu manera.
-              </p>
-              <div className="hero-v2-actions">
-                <Button asChild size="lg">
-                  <Link href="/cursos">
-                    Encontrá tu próximo curso <span aria-hidden="true">↗</span>
+            <div className="hero-v2-main">
+              <div className="hero-v2-copy">
+                <h1>
+                  El futuro
+                  <br />
+                  se <span>aprende.</span>
+                </h1>
+                <p>
+                  Habilidades para lo que viene.
+                  <br />
+                  Un nuevo camino, a tu manera.
+                </p>
+                <div className="hero-v2-actions">
+                  <Button asChild size="lg">
+                    <Link href="/cursos">
+                      Encontrá tu próximo curso <span aria-hidden="true">↗</span>
+                    </Link>
+                  </Button>
+                  <Link href="#metodo" className="hero-secondary">
+                    Conocé nuestra forma de aprender
                   </Link>
-                </Button>
-                <Link href="#metodo" className="hero-secondary">
-                  Conocé nuestra forma de aprender
-                </Link>
+                </div>
               </div>
+              <LearningArtwork />
             </div>
             <div className="hero-v2-bottom">
               <a href="#cursos" className="scroll-cue">

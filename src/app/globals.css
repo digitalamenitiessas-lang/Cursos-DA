@@ -1476,7 +1476,7 @@ th {
   }
 }
 
-/* Digital Amenities: editorial space, reactive field and a native scroll narrative. */
+/* Digital Amenities: editorial space and a native scroll narrative. */
 .home-v2 {
   --background: #0b0d12;
   background: #0b0d12;
@@ -2344,5 +2344,163 @@ th {
   .journey-topline .eyebrow {
     max-width: 230px;
     line-height: 1.8;
+  }
+}
+
+/* React Bits on the public site: Dither Veil and Spotlight Card. */
+.hero-v2-main {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+  gap: 32px;
+  margin-top: 42px;
+}
+.hero-v2-main .hero-v2-copy {
+  margin-top: 0;
+  min-width: 0;
+}
+.hero-v2-main h1 {
+  font-size: clamp(64px, 6.8vw, 96px);
+  letter-spacing: -5px;
+}
+.hero-v2-main h1 span {
+  letter-spacing: -4px;
+}
+.hero-v2-main .hero-v2-actions {
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.learning-artwork {
+  position: relative;
+  isolation: isolate;
+  height: 460px;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #baa8df20;
+  border-radius: 50% 50% 12px 12px;
+  background: #14131d;
+}
+.learning-artwork-image {
+  position: absolute;
+  inset: 0;
+  background: url('/brand/studio-art.svg') center/cover;
+}
+.learning-artwork-veil {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.learning-artwork::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #0b0d12 0%, transparent 30%);
+  pointer-events: none;
+}
+.learning-artwork-label,
+.learning-artwork-tag {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+.learning-artwork-label {
+  left: 24px;
+  right: 24px;
+  bottom: 56px;
+  display: flex;
+  justify-content: space-between;
+  color: #a69ab7;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+}
+.learning-artwork-tag {
+  left: 24px;
+  bottom: 22px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: #d8c7eb;
+}
+.public-course-spotlight {
+  position: relative;
+  min-width: 0;
+  border-radius: 14px;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+}
+.public-course-spotlight .course-card {
+  display: block;
+  height: 100%;
+}
+.public-course-spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    320px circle at var(--mouse-x) var(--mouse-y),
+    #c4a7fa24,
+    transparent 75%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.public-course-spotlight:focus-within::after {
+  opacity: 1;
+}
+.public-course-spotlight .course-card:focus-visible {
+  outline: 2px solid #c5a5f8;
+  outline-offset: 5px;
+  border-radius: 14px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .public-course-spotlight:hover::after {
+    opacity: 1;
+  }
+}
+@media (max-width: 1000px) {
+  .hero-v2-main {
+    grid-template-columns: 1.25fr 1fr;
+    gap: 20px;
+  }
+  .hero-v2-main h1 {
+    font-size: 74px;
+    letter-spacing: -4px;
+  }
+  .learning-artwork {
+    height: 390px;
+  }
+}
+@media (max-width: 760px) {
+  .hero-v2-main {
+    grid-template-columns: 1fr;
+    margin-top: 42px;
+    gap: 36px;
+  }
+  .hero-v2-main h1 {
+    font-size: clamp(60px, 11vw, 88px);
+    letter-spacing: -4px;
+  }
+  .hero-v2-main h1 span {
+    letter-spacing: -3px;
+  }
+  .learning-artwork {
+    height: 290px;
+    border-radius: 12px;
+  }
+  .hero-v2-bottom {
+    padding-top: 30px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-course-spotlight::after {
+    display: none;
+  }
+  .public-course-spotlight .course-card:hover {
+    transform: none;
   }
 }
