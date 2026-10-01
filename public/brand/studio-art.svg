@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="650" viewBox="0 0 800 650">
+<defs><radialGradient id="a"><stop stop-color="#d5c5f5"/><stop offset=".48" stop-color="#9780c0"/><stop offset="1" stop-color="#1b1728"/></radialGradient><linearGradient id="b" x2="1" y2="1"><stop stop-color="#f7e6d3"/><stop offset=".4" stop-color="#c8b2ee"/><stop offset="1" stop-color="#312546"/></linearGradient><filter id="s"><feGaussianBlur stdDeviation="28"/></filter></defs>
+<rect width="800" height="650" fill="#14131d"/>
+<ellipse cx="430" cy="350" rx="270" ry="210" fill="url(#a)" filter="url(#s)" opacity=".7"/>
+<g transform="translate(418 315) rotate(-29)"><ellipse rx="236" ry="164" fill="url(#b)"/><ellipse rx="171" ry="112" fill="#1c1829"/><ellipse rx="141" ry="94" fill="url(#a)"/><ellipse rx="94" ry="63" fill="#14131d"/><ellipse rx="236" ry="164" fill="none" stroke="#efe3ff" stroke-width="2" opacity=".4"/></g>
+<g stroke="#d3c3eb" fill="none" opacity=".24"><circle cx="418" cy="315" r="280"/><circle cx="418" cy="315" r="295"/><path d="M80 80h35M97 63v35M684 524h35M701 507v35"/></g>
+<g fill="#eaddff"><circle cx="177" cy="232" r="4"/><circle cx="626" cy="433" r="3"/><circle cx="551" cy="81" r="2"/></g>
+</svg>

@@ -52,3 +52,13 @@ Se verificó TypeScript con `npm run typecheck`. Las consultas, RLS, RPC, transf
 4. Otorgar y revocar una beca con motivo; verificar auditoría y que otro permiso independiente siga activo.
 5. Verificar filtros de fecha argentina y revisar un reembolso parcial desde Pagos.
 6. Comparar métricas con un conjunto conocido de pagos aprobados, reembolsados, repetidos y permisos manuales.
+
+## Digital Amenities Studio
+
+El panel tiene navegación lateral con sección activa y menú plegable en celular. El resumen conserva las métricas reales e incorpora accesos rápidos. La gestión de cursos usa tarjetas con módulos/clases, búsqueda por título y filtro por estado. El formulario separa presentación, aprendizaje y venta, genera una URL editable y conserva los campos al cambiar de paso; los nuevos cursos comienzan como borradores.
+
+El editor permite ir directamente a información, temario/archivos y portada/publicación. La lista de preparación muestra portada, clases y videos listos sin presentar estos indicadores como una validación del proveedor. Las cargas permiten elegir o arrastrar archivos, muestran nombre/tamaño y mantienen confirmación, progreso y estado de procesamiento.
+
+`/admin/configuracion` muestra la disponibilidad de configuración de los servicios sin exponer sus credenciales. No sustituye las pruebas integrales.
+
+Dither Veil y Spotlight Card fueron adaptados del código oficial de [React Bits](https://reactbits.dev/), con su licencia preservada en `src/components/react-bits/LICENSE.md`. El efecto visual se limita a una pieza del resumen, usa una ilustración SVG local, pausa al ocultar la pestaña y al salir de vista, y tiene alternativa estática para movimiento reducido o falta de WebGL. Los formularios mantienen validación en el servidor y requieren un administrador confirmado.

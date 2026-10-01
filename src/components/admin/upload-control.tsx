@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as tus from 'tus-js-client';
-import { UploadCloud, RefreshCw } from 'lucide-react';
+import { UploadCloud, RefreshCw, FileCheck2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
 export function UploadControl({
@@ -10,11 +10,13 @@ export function UploadControl({
   courseId,
   lessonId,
   initialStatus,
+  preview = false,
 }: {
   kind: 'cover' | 'resource' | 'video';
   courseId?: string;
   lessonId?: string;
   initialStatus?: string;
+  preview?: boolean;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -25,6 +27,7 @@ export function UploadControl({
   const [checking, setChecking] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
+  const [dragging, setDragging] = useState(false);
   const uploadRef = useRef<tus.Upload | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(
@@ -33,6 +36,21 @@ export function UploadControl({
     },
     [],
   );
+  function selectFile(candidate: File | null) {
+    setFailed(false);
+    setMessage('');
+    if (
+      candidate &&
+      kind !== 'video' &&
+      candidate.size > (kind === 'cover' ? 5 : 50) * 1024 * 1024
+    ) {
+      setFailed(true);
+      setMessage(`El archivo supera el límite de ${kind === 'cover' ? 5 : 50} MB.`);
+      setFile(null);
+      return;
+    }
+    setFile(candidate);
+  }
   async function checkStatus() {
     if (!lessonId) return;
     setChecking(true);
@@ -66,6 +84,11 @@ export function UploadControl({
   }, [status, busy, kind, lessonId]);
   async function upload() {
     if (!file) return;
+    if (preview) {
+      setMessage('Vista de diseño: ingresá como administrador para subir archivos.');
+      setFailed(false);
+      return;
+    }
     if (
       kind === 'video' &&
       initialStatus &&
@@ -167,7 +190,7 @@ export function UploadControl({
     error: 'Error de procesamiento',
   };
   return (
-    <div className="space-y-3 rounded-xl border border-white/10 bg-black/10 p-4">
+    <div className="studio-upload space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-sm font-medium text-slate-200">{label}</p>
         {kind === 'video' && status && (
@@ -187,11 +210,41 @@ export function UploadControl({
           />
         </label>
       )}
-      <label className="field">
-        <span className="sr-only">Seleccionar {label.toLowerCase()}</span>
+      <label
+        className={`studio-dropzone ${dragging ? 'is-dragging' : ''}`}
+        aria-disabled={busy}
+        onDragOver={(event) => {
+          event.preventDefault();
+          if (!busy) setDragging(true);
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(event) => {
+          event.preventDefault();
+          setDragging(false);
+          if (!busy) selectFile(event.dataTransfer.files[0] || null);
+        }}
+      >
+        {file ? (
+          <FileCheck2 size={25} strokeWidth={1.5} />
+        ) : (
+          <UploadCloud size={25} strokeWidth={1.5} />
+        )}
+        <span>
+          <strong>{file ? file.name : 'Arrastrá un archivo o elegilo desde tu equipo'}</strong>
+          <small>
+            {file
+              ? `${(file.size / 1024 / 1024).toFixed(1)} MB · listo para subir`
+              : kind === 'cover'
+                ? 'JPG, PNG o WebP · hasta 5 MB'
+                : kind === 'video'
+                  ? 'Video · carga directa y privada'
+                  : 'PDF, documentos y otros archivos · hasta 50 MB'}
+          </small>
+        </span>
         <input
           ref={inputRef}
           type="file"
+          aria-label={`Seleccionar ${label.toLowerCase()}`}
           accept={
             kind === 'cover'
               ? 'image/jpeg,image/png,image/webp'
@@ -200,8 +253,8 @@ export function UploadControl({
                 : '.pdf,.zip,.txt,.csv,.docx,.xlsx,.pptx,.png,.jpg,.webp'
           }
           disabled={busy}
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
-          className="block w-full min-w-0 text-xs text-slate-400 file:mr-3 file:rounded-lg file:border-0 file:bg-white/10 file:px-3 file:py-2 file:text-slate-200"
+          onChange={(event) => selectFile(event.target.files?.[0] || null)}
+          className="sr-only"
         />
       </label>
       <div className="flex flex-wrap gap-2">

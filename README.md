@@ -42,6 +42,10 @@ Comenzar por crear Supabase, aplicar las tres migraciones, configurar `.env.loca
 
 Nombre/logo en `src/lib/brand.ts` y `src/components/brand.tsx`; originales de Digital Amenities en `public/brand/`. El sello se usa en la navegación y el logo completo al pie, con adaptación visual al fondo oscuro mediante CSS. El favicon `src/app/icon.svg` conserva el monograma original y adapta su color al tema del navegador. Tokens cromáticos en `src/app/globals.css`. Los ejemplos están aislados en `src/lib/data/demo.ts` y el seed explícito en `supabase/dev/seed.sql`.
 
+## Revisar el diseño del panel
+
+En desarrollo, `/studio-preview` permite revisar la navegación, el efecto Dither Veil, el formulario y las cargas sin iniciar sesión. Está identificado como una vista de diseño, no muestra datos administrativos y desactiva guardados y transferencias. En producción responde 404. El panel operativo `/admin` siempre exige una cuenta verificada con rol administrador.
+
 ## Modelo de seguridad
 
 `orders` conserva precio/moneda; `payment_attempts` representa cada checkout; `payments` representa estados oficiales consultados a Mercado Pago; `access_grants` representa permisos independientes. Cambios financieros son transaccionales y exclusivos de `service_role`. Ningún formulario admite asignar rol. RLS protege cada consulta directa. Videos tienen metadata separada del temario y tokens temporales; materiales usan bucket privado. Se conservan cursos vendidos al archivarlos.

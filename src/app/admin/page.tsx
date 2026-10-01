@@ -11,6 +11,8 @@ import {
 import { requireAdminPage as requireAdmin } from '@/app/admin/access';
 import { formatMoney } from '@/lib/utils';
 import { allAdminRows } from './data';
+import { StudioWelcome } from '@/components/admin/studio-welcome';
+import { SpotlightCard } from '@/components/react-bits/spotlight-card';
 
 type Payment = {
   id: string;
@@ -123,19 +125,17 @@ export default async function AdminOverview() {
   ];
   return (
     <div className="space-y-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <StudioWelcome />
+      <div className="studio-section-title">
         <div>
-          <p className="eyebrow">TU ACADEMIA, EN PERSPECTIVA</p>
-          <h1 className="page-heading mt-2">Cada aprendizaje cuenta.</h1>
-          <p className="muted mt-3">Actividad acumulada de la academia, con datos reales.</p>
+          <p className="eyebrow">LA ACADEMIA HOY</p>
+          <h2>Una mirada a lo que importa.</h2>
         </div>
-        <Link href="/admin/cursos/nuevo" className="button">
-          Crear curso <ArrowUpRight size={16} />
-        </Link>
+        <span>Actividad acumulada</span>
       </div>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {cards.map(({ label, value, note, Icon }) => (
-          <div className="panel p-6" key={label}>
+          <SpotlightCard className="studio-metric panel p-6" key={label}>
             <div className="flex items-center justify-between gap-3">
               <span className="text-sm text-slate-400">{label}</span>
               <span className="rounded-xl bg-violet-500/10 p-2.5 text-violet-300">
@@ -144,7 +144,7 @@ export default async function AdminOverview() {
             </div>
             <p className="mt-5 text-3xl font-semibold tracking-tight">{value}</p>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">{note}</p>
-          </div>
+          </SpotlightCard>
         ))}
       </div>
       <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">

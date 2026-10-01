@@ -22,7 +22,7 @@ Si ya existe `supabase/config.toml`, omití `supabase init`. Las tres migracione
 2. `supabase/migrations/202609290002_transactions.sql`: operaciones transaccionales privilegiadas de checkout, pagos, accesos y reordenamiento.
 3. `supabase/migrations/202609290003_progress.sql`: guardado atómico de progreso para que una actualización atrasada no desmarque una clase completada.
 
-Para un proyecto nuevo también se pueden ejecutar los tres archivos completos en el SQL Editor en ese orden. Elegí un procedimiento de migración y mantené su historial consistente. No ejecutes `supabase/tests/local-bootstrap.sql` en Supabase: sólo crea interfaces mínimas para pruebas en PostgreSQL vacío.
+Para un proyecto nuevo también se puede ejecutar completo `supabase/setup.sql` en el SQL Editor: agrupa las tres migraciones en una transacción y se ejecuta una sola vez. Como alternativa, ejecutá los tres archivos completos en ese orden. Elegí un procedimiento de migración y mantené su historial consistente. No ejecutes `supabase/tests/local-bootstrap.sql` en Supabase: sólo crea interfaces mínimas para pruebas en PostgreSQL vacío.
 
 Las migraciones requieren los esquemas `auth`, `storage` y `extensions` que provee Supabase. No incluyen usuarios, cursos ficticios, compras ni accesos de ejemplo. La integración no crea ni modifica un proyecto remoto automáticamente.
 

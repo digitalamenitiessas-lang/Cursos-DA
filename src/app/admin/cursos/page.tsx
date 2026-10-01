@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Plus, ArrowUpRight, BookOpen } from 'lucide-react';
+import { Plus, ArrowUpRight, BookOpen, Layers3, Play } from 'lucide-react';
 import { requireAdminPage as requireAdmin } from '@/app/admin/access';
 import { formatMoney } from '@/lib/utils';
 import { AdminNotice } from '@/components/admin/notice';
@@ -11,7 +11,13 @@ const labels: Record<string, string> = {
 export default async function AdminCourses({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; success?: string; status?: string; page?: string }>;
+  searchParams: Promise<{
+    error?: string;
+    success?: string;
+    status?: string;
+    page?: string;
+    q?: string;
+  }>;
 }) {
   const { supabase } = await requireAdmin();
   const query = await searchParams;
@@ -19,11 +25,17 @@ export default async function AdminCourses({
   const pageSize = 30;
   let request = supabase
     .from('courses')
-    .select('id,title,subtitle,category,price_cents,status,cover_url', { count: 'exact' })
+    .select(
+      'id,title,subtitle,category,price_cents,status,cover_url,modules(count),lessons(count)',
+      { count: 'exact' },
+    )
     .order('created_at', { ascending: false })
+    .order('id')
     .range((page - 1) * pageSize, page * pageSize - 1);
   if (query.status && ['draft', 'published', 'archived'].includes(query.status))
     request = request.eq('status', query.status);
+  const search = (typeof query.q === 'string' ? query.q : '').trim().slice(0, 180);
+  if (search) request = request.ilike('title', `%${search.replace(/[\\%_]/g, '\\$&')}%`);
   const { data: courses, error, count } = await request;
   if (error) throw new Error('No se pudieron consultar los cursos');
   return (
@@ -31,7 +43,9 @@ export default async function AdminCourses({
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="page-heading">Tus cursos</h1>
-          <p className="muted mt-2">Ideas que se convierten en nuevos caminos.</p>
+          <p className="muted mt-2">
+            Creá, organizá y publicá. Cada curso tiene su propio recorrido.
+          </p>
         </div>
         <Link href="/admin/cursos/nuevo" className="button">
           <Plus size={18} />
@@ -39,7 +53,17 @@ export default async function AdminCourses({
         </Link>
       </div>
       <AdminNotice error={query.error} success={query.success} />
-      <form className="flex items-end gap-3">
+      <form className="studio-search-form">
+        <label className="field">
+          <span className="field-label">Buscar un curso</span>
+          <input
+            className="input"
+            name="q"
+            defaultValue={search}
+            placeholder="Nombre del curso"
+            maxLength={180}
+          />
+        </label>
         <label className="field">
           <span className="field-label">Estado</span>
           <select className="input" name="status" defaultValue={query.status || ''}>
@@ -54,58 +78,63 @@ export default async function AdminCourses({
         <button className="button-secondary">Filtrar</button>
       </form>
       {!courses?.length ? (
-        <div className="empty-state panel p-12">
-          <BookOpen className="mx-auto mb-4 text-violet-300" size={32} />
-          <h2 className="text-lg font-semibold">El próximo curso empieza acá</h2>
-          <p className="muted mt-2">
-            Creá tu primer borrador para organizar módulos, clases y materiales.
+        <div className="studio-empty panel">
+          <BookOpen size={38} strokeWidth={1} />
+          <h2>
+            {search || query.status
+              ? 'No encontramos cursos con esos filtros'
+              : 'Todo empieza con una idea.'}
+          </h2>
+          <p className="muted">
+            {search || query.status
+              ? 'Probá con otro nombre o revisá todos tus cursos.'
+              : 'Creá tu primer borrador. Después dale forma con módulos, clases y materiales.'}
           </p>
-          <Link href="/admin/cursos/nuevo" className="button mt-5">
-            Crear un curso
+          <Link
+            href={search || query.status ? '/admin/cursos' : '/admin/cursos/nuevo'}
+            className="button"
+          >
+            {search || query.status ? 'Ver todos los cursos' : 'Crear mi primer curso'}
+            <ArrowUpRight size={15} />
           </Link>
         </div>
       ) : (
-        <div className="table-wrap panel">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Curso</th>
-                <th>Estado</th>
-                <th>Precio</th>
-                <th>
-                  <span className="sr-only">Acciones</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {courses.map((course) => (
-                <tr key={course.id}>
-                  <td>
-                    <div className="font-medium text-white">{course.title}</div>
-                    <div className="mt-1 text-xs text-slate-400">{course.category}</div>
-                  </td>
-                  <td>
-                    <span
-                      className={`badge ${course.status === 'published' ? 'text-cyan-300' : 'text-slate-300'}`}
-                    >
-                      {labels[course.status]}
-                    </span>
-                  </td>
-                  <td className="whitespace-nowrap">{formatMoney(course.price_cents)}</td>
-                  <td>
-                    <Link
-                      href={`/admin/cursos/${course.id}`}
-                      className="inline-flex items-center gap-2 text-violet-300 hover:text-violet-100"
-                    >
-                      Editar
-                      <ArrowUpRight size={15} />
-                      <span className="sr-only">{course.title}</span>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="studio-course-grid">
+          {courses.map((course) => (
+            <article className="studio-course-card" key={course.id}>
+              <div className="studio-course-art">
+                {course.cover_url ? (
+                  <img src={course.cover_url} alt="" />
+                ) : (
+                  <BookOpen size={44} strokeWidth={1} />
+                )}
+                <span className="badge">{labels[course.status]}</span>
+              </div>
+              <div className="studio-course-body">
+                <p>{course.category}</p>
+                <h2>
+                  <Link href={`/admin/cursos/${course.id}`}>{course.title}</Link>
+                </h2>
+                <div className="studio-course-meta">
+                  <span>
+                    <Layers3 size={12} className="inline mr-1" />
+                    {course.modules?.[0]?.count || 0} módulos
+                  </span>
+                  <span>
+                    <Play size={12} className="inline mr-1" />
+                    {course.lessons?.[0]?.count || 0} clases
+                  </span>
+                </div>
+                <div className="studio-course-bottom">
+                  <span>{formatMoney(course.price_cents)}</span>
+                  <Link href={`/admin/cursos/${course.id}`}>
+                    Editar curso <ArrowUpRight size={15} />
+                    <span className="sr-only">{course.title}</span>
+                  </Link>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       )}
       <nav aria-label="Paginación de cursos" className="flex items-center justify-between">
@@ -115,7 +144,7 @@ export default async function AdminCourses({
         <div className="flex gap-2">
           {page > 1 && (
             <Link
-              href={`/admin/cursos?${new URLSearchParams({ status: query.status || '', page: String(page - 1) })}`}
+              href={`/admin/cursos?${new URLSearchParams({ status: query.status || '', q: search, page: String(page - 1) })}`}
               className="button-secondary"
             >
               Anterior
@@ -123,7 +152,7 @@ export default async function AdminCourses({
           )}
           {page * pageSize < (count || 0) && (
             <Link
-              href={`/admin/cursos?${new URLSearchParams({ status: query.status || '', page: String(page + 1) })}`}
+              href={`/admin/cursos?${new URLSearchParams({ status: query.status || '', q: search, page: String(page + 1) })}`}
               className="button-secondary"
             >
               Siguiente

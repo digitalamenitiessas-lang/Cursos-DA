@@ -13,8 +13,10 @@ export default async function NewCourse({
         ← Todos los cursos
       </Link>
       <div>
-        <h1 className="page-heading">Un nuevo comienzo</h1>
-        <p className="muted mt-2">Creá el curso y después agregá el contenido y la portada.</p>
+        <h1 className="page-heading">Creá tu próximo curso.</h1>
+        <p className="muted mt-2">
+          Tres pasos para darle forma. Guardalo como borrador y después cargá las clases.
+        </p>
       </div>
       <AdminNotice error={query.error} />
       <section className="panel p-6 md:p-8">

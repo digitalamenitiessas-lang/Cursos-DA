@@ -7,6 +7,16 @@
 - `.env.local` permanece excluido de Git; `.env.example` contiene únicamente nombres de variables y valores de ejemplo sin credenciales.
 - Continúan pendientes la configuración y las pruebas de Supabase, Mercado Pago, Cloudflare Stream y el despliegue Vercel descritas abajo. El registro del 29 de septiembre conserva el estado de aquella entrega local.
 
+## Digital Amenities Studio — 1 de octubre de 2026
+
+- Nuevo espacio administrativo con navegación lateral, sección activa y menú móvil; resumen con Dither Veil y Spotlight Card adaptados de React Bits, licencia preservada e ilustración local.
+- Cursos con búsqueda por título, estado, tarjetas y recuentos de módulos/clases; formulario de tres pasos, dirección automática editable, vista previa y creación inicial como borrador. Editor con accesos a información, temario y portada/publicación, indicadores de preparación y selección/arrastre de archivos.
+- Configuración de servicios muestra únicamente disponibilidad de variables; nunca sus valores ni un supuesto resultado de pruebas reales.
+- TypeScript, formato y compilación de producción aprobados. Las 21 pruebas de código pasaron. El archivo consolidado `supabase/setup.sql` se aplicó desde cero en PostgreSQL local y superó las 70 aserciones de seguridad.
+- Revisión visual usando `/studio-preview`: validación antes de avanzar, campos conservados, URL generada con acentos normalizados, vista previa de precio y envío bloqueado con retorno al paso incompleto. Editor móvil de 384 px sin desborde horizontal; navegación plegable revisada. Sin errores del efecto WebGL en consola durante la revisión.
+- La vista de diseño no guarda cursos ni transfiere archivos, no muestra datos administrativos y responde 404 en producción. `/admin` sin sesión redirigió al ingreso en la prueba de navegador.
+- Con las credenciales del propietario, Supabase Auth respondió y no informó usuarios; las consultas a `courses`, `user_roles`, `lesson_videos` y `resources` respondieron 404 por esquema pendiente. Falta ejecutar el SQL inicial en el proyecto real, registrar/verificar la cuenta y habilitar el primer administrador. No se probaron CRUD, cargas ni pagos contra esos servicios.
+
 ## Ejecutado localmente
 
 - `npm run typecheck`: TypeScript estricto sin errores.

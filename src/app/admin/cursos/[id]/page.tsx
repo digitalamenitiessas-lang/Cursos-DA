@@ -1,6 +1,17 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowDown, ArrowUp, FileText, Plus, GripVertical } from 'lucide-react';
+import {
+  ArrowDown,
+  ArrowUp,
+  FileText,
+  Plus,
+  GripVertical,
+  CheckCircle2,
+  Circle,
+  Image as ImageIcon,
+  ListVideo,
+  FilePenLine,
+} from 'lucide-react';
 import { requireAdminPage as requireAdmin } from '@/app/admin/access';
 import { CourseForm } from '@/components/admin/course-form';
 import { ConfirmSubmit } from '@/components/admin/confirm-submit';
@@ -91,12 +102,29 @@ export default async function CourseEditor({
         )}
       </div>
       <AdminNotice error={query.error} success={query.success} />
+      <nav className="studio-editor-nav" aria-label="Secciones del editor">
+        <a href="#curso-informacion">
+          <FilePenLine size={14} />
+          Información
+        </a>
+        <a href="#curso-temario">
+          <ListVideo size={14} />
+          Temario y archivos <span>{lessons.length} clases</span>
+        </a>
+        <a href="#curso-portada">
+          <ImageIcon size={14} />
+          Portada y publicación
+        </a>
+      </nav>
       <div className="grid items-start gap-6 xl:grid-cols-[1fr_320px]">
-        <section className="panel p-6 md:p-8">
+        <section
+          id="curso-informacion"
+          className="studio-editor-anchor studio-editor-general panel p-6 md:p-8"
+        >
           <h2 className="section-heading mb-6">Información general</h2>
           <CourseForm course={course} />
         </section>
-        <aside className="space-y-5">
+        <aside id="curso-portada" className="studio-editor-anchor space-y-5">
           <div className="panel p-5">
             {course.cover_url && (
               <div className="mb-4 aspect-[16/10] overflow-hidden rounded-xl">
@@ -114,6 +142,33 @@ export default async function CourseEditor({
             <p className="text-sm leading-relaxed text-slate-400">
               Un curso publicado aparece en el catálogo. Archivar detiene las ventas y mantiene el
               acceso de sus alumnos.
+            </p>
+            <ul className="studio-readiness" aria-label="Preparación del curso">
+              {[
+                {
+                  label: 'Información y precio definidos',
+                  done: Boolean(course.title && course.description && course.price_cents),
+                },
+                { label: 'Portada cargada', done: Boolean(course.cover_url) },
+                {
+                  label: `${modules.length} módulos · ${lessons.length} clases`,
+                  done: lessons.length > 0,
+                },
+                {
+                  label: `${videos.filter((video) => video.status === 'ready').length} de ${lessons.length} videos listos`,
+                  done:
+                    lessons.length > 0 &&
+                    videos.filter((video) => video.status === 'ready').length === lessons.length,
+                },
+              ].map((item) => (
+                <li key={item.label} className={item.done ? '' : 'is-missing'}>
+                  {item.done ? <CheckCircle2 size={15} /> : <Circle size={15} />}
+                  <span>{item.label}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-slate-500">
+              Antes de publicar, revisá que todas las clases tengan su video listo.
             </p>
             <form action={setCourseStatus}>
               <input type="hidden" name="course_id" value={id} />
@@ -135,7 +190,7 @@ export default async function CourseEditor({
           </div>
         </aside>
       </div>
-      <section className="space-y-5">
+      <section id="curso-temario" className="studio-editor-anchor space-y-5">
         <div>
           <h2 className="section-heading">El recorrido de aprendizaje</h2>
           <p className="muted mt-2">
