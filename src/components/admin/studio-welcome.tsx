@@ -1,19 +1,18 @@
 import Link from 'next/link';
 import { ArrowUpRight, Plus, BookOpen, Users, CreditCard } from 'lucide-react';
 import { StudioArtwork } from './studio-artwork';
-import { SpotlightCard } from '@/components/react-bits/spotlight-card';
 export function StudioWelcome() {
   return (
     <>
       <section className="studio-welcome">
         <div className="studio-welcome-copy">
-          <p className="eyebrow">MENOS FRICCIÓN. MÁS CREACIÓN.</p>
+          <p className="eyebrow">DIGITAL AMENITIES / ADMINISTRACIÓN</p>
           <h1>
-            Tu conocimiento.
+            Tu formación.
             <br />
-            <em>El próximo comienzo.</em>
+            <em>Bien organizada.</em>
           </h1>
-          <p>Este es tu espacio para crear cursos, acompañar alumnos y hacer crecer la academia.</p>
+          <p>Creá cursos, organizá clases y revisá los accesos y pagos de tus alumnos.</p>
           <Link href="/admin/cursos/nuevo" className="button">
             <Plus size={16} /> Crear un curso <ArrowUpRight size={15} />
           </Link>
@@ -24,24 +23,24 @@ export function StudioWelcome() {
         {[
           {
             href: '/admin/cursos',
-            title: 'Tu contenido',
-            text: 'Del borrador a la primera clase.',
+            title: 'Cursos y contenido',
+            text: 'Módulos, clases y publicación.',
             Icon: BookOpen,
           },
           {
             href: '/admin/alumnos',
-            title: 'Tu comunidad',
+            title: 'Alumnos y accesos',
             text: 'Personas, progreso y accesos.',
             Icon: Users,
           },
           {
             href: '/admin/pagos',
-            title: 'Tus ventas',
-            text: 'Cada pago, en un solo lugar.',
+            title: 'Ventas y pagos',
+            text: 'Estados de pago y conciliación.',
             Icon: CreditCard,
           },
         ].map(({ href, title, text, Icon }) => (
-          <SpotlightCard key={href}>
+          <div className="studio-shortcut-card" key={href}>
             <Link href={href}>
               <span className="studio-shortcut-icon">
                 <Icon size={20} />
@@ -52,7 +51,7 @@ export function StudioWelcome() {
               </span>
               <ArrowUpRight size={17} />
             </Link>
-          </SpotlightCard>
+          </div>
         ))}
       </div>
     </>

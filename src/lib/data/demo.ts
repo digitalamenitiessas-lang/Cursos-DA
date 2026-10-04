@@ -95,6 +95,7 @@ export const demoCourses: Course[] = [
   },
 ].map((course, i) => ({
   ...course,
+  status: 'draft',
   modules: [
     {
       id: `demo-module-${i}`,

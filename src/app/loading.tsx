@@ -8,7 +8,7 @@ export default function Loading() {
     >
       <div className="loading-shimmer h-10 w-72" />
       <div className="loading-shimmer loading-box" />
-      <p>Cargando tu próximo paso…</p>
+      <p>Cargando contenido…</p>
     </main>
   );
 }

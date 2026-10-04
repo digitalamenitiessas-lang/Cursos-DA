@@ -54,11 +54,11 @@ export default async function Detail({ params }: { params: Promise<{ slug: strin
               Un curso de <strong>{course.instructor}</strong>
             </p>
             <section>
-              <h2>Un paso más cerca de lo que querés hacer.</h2>
+              <h2>Sobre este curso</h2>
               <p className="whitespace-pre-line">{course.description}</p>
             </section>
             <section>
-              <h2>Lo que te vas a llevar</h2>
+              <h2>Qué vas a aprender</h2>
               <ul className="check-list">
                 {course.learning_outcomes.map((x, i) => (
                   <li key={i}>
@@ -69,7 +69,7 @@ export default async function Detail({ params }: { params: Promise<{ slug: strin
               </ul>
             </section>
             <section>
-              <h2>Tu recorrido</h2>
+              <h2>Temario y clases</h2>
               <div className="syllabus">
                 {course.modules
                   ?.sort((a, b) => a.position - b.position)

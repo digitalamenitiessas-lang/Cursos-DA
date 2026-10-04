@@ -12,14 +12,14 @@ export function AuthPage({
 }) {
   const copy = {
     signin: [
-      'QUÉ BUENO VERTE',
-      'Tu próximo paso te espera.',
-      'Ingresá para continuar donde dejaste.',
+      'DIGITAL AMENITIES / MI CUENTA',
+      'Volvé a tu aula.',
+      'Ingresá para acceder a tus cursos y continuar aprendiendo.',
     ],
     signup: [
-      'HAY MUCHO POR DESCUBRIR',
-      'Empezá tu nuevo camino.',
-      'Creá tu cuenta y encontrá tu próximo desafío.',
+      'DIGITAL AMENITIES / REGISTRO',
+      'Tu formación, en un lugar.',
+      'Creá tu cuenta para comprar cursos y seguir tu progreso.',
     ],
     recover: [
       'VOLVAMOS A EMPEZAR',

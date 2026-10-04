@@ -1,19 +1,47 @@
 import Link from 'next/link';
-import { Code2, Layers3, ChartNoAxesCombined, Sparkles, Clock3, BookOpen } from 'lucide-react';
+import {
+  Code2,
+  Layers3,
+  ChartNoAxesCombined,
+  Sparkles,
+  Clock3,
+  BookOpen,
+  Workflow,
+  Wrench,
+} from 'lucide-react';
 import type { Course } from '@/lib/types';
 import { formatMoney, formatDuration } from '@/lib/utils';
 import { courseStats } from '@/lib/data/courses';
-import { SpotlightCard } from '@/components/react-bits/spotlight-card';
+import { normalizeSearch } from '@/lib/offering';
 export function CourseArtwork({ course, large = false }: { course: Course; large?: boolean }) {
-  const kind =
-    course.category === 'Desarrollo'
-      ? 'code'
-      : course.category === 'Diseño'
-        ? 'design'
-        : course.category === 'Datos'
-          ? 'data'
-          : 'ai';
-  const Icon = { code: Code2, design: Layers3, data: ChartNoAxesCombined, ai: Sparkles }[kind];
+  const category = normalizeSearch(course.category);
+  const kind = /desarrollo|programacion|web/.test(category)
+    ? 'code'
+    : category.includes('diseno')
+      ? 'design'
+      : category.includes('datos')
+        ? 'data'
+        : category.includes('automatiza')
+          ? 'automation'
+          : /inteligencia artificial|ia aplicada/.test(category)
+            ? 'ai'
+            : 'tools';
+  const Icon = {
+    code: Code2,
+    design: Layers3,
+    data: ChartNoAxesCombined,
+    ai: Sparkles,
+    automation: Workflow,
+    tools: Wrench,
+  }[kind];
+  const captions = {
+    code: 'Tu idea, en una web.',
+    design: 'Diseñá materiales que se usan.',
+    data: 'De los datos a una decisión.',
+    ai: 'IA aplicada, con criterio.',
+    automation: 'Menos pasos en una tarea.',
+    tools: 'Herramientas para el día a día.',
+  };
   return (
     <div className={`course-art art-${kind} ${large ? 'art-large' : ''}`}>
       {course.cover_url ? (
@@ -25,15 +53,7 @@ export function CourseArtwork({ course, large = false }: { course: Course; large
           <div className="art-icon">
             <Icon size={large ? 76 : 58} strokeWidth={1} />
           </div>
-          <span className="art-caption">
-            {kind === 'code'
-              ? '< build your future />'
-              : kind === 'design'
-                ? 'Ideas que toman forma.'
-                : kind === 'data'
-                  ? 'Convertí datos en decisiones.'
-                  : 'Creá nuevas posibilidades.'}
-          </span>
+          <span className="art-caption">{captions[kind]}</span>
         </>
       )}
     </div>
@@ -42,7 +62,7 @@ export function CourseArtwork({ course, large = false }: { course: Course; large
 export function CourseCard({ course }: { course: Course }) {
   const stats = courseStats(course);
   return (
-    <SpotlightCard className="public-course-spotlight">
+    <div className="course-card-frame">
       <Link href={`/cursos/${course.slug}`} className="course-card group">
         <CourseArtwork course={course} />
         <div className="course-card-content">
@@ -72,6 +92,6 @@ export function CourseCard({ course }: { course: Course }) {
           </div>
         </div>
       </Link>
-    </SpotlightCard>
+    </div>
   );
 }

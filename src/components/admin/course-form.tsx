@@ -6,6 +6,7 @@ import { ArrowRight, ArrowLeft, BookOpen, Eye, Info, Save } from 'lucide-react';
 import { saveCourse } from '@/app/admin/actions';
 import { formatMoney } from '@/lib/utils';
 import { ConfirmSubmit } from './confirm-submit';
+import { learningPaths } from '@/lib/offering';
 export type EditableCourse = {
   id?: string;
   title?: string;
@@ -204,8 +205,17 @@ export function CourseForm({
                 maxLength={80}
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                placeholder="Diseño"
+                placeholder="IA aplicada"
+                list={`${prefix}-categories`}
               />
+              <datalist id={`${prefix}-categories`}>
+                {learningPaths.map((path) => (
+                  <option value={path.category} key={path.id} />
+                ))}
+              </datalist>
+              <span className="text-xs muted">
+                Elegí una categoría sugerida o escribí una nueva.
+              </span>
             </label>
             <label className="field">
               <span className="field-label">Instructor</span>

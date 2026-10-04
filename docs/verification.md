@@ -1,5 +1,32 @@
 # Registro de verificación — 29 de septiembre de 2026
 
+## Verificación previa a publicación — 4 de octubre de 2026
+
+- `npm run build`: compilación de producción y validación TypeScript completadas.
+- `npm test`: 24 pruebas aprobadas, sin fallos.
+- `npm run format:check` y `git diff --check`: sin incidencias.
+- GitHub confirma que la rama `main` está integrada con Vercel para el entorno Production. Estos controles no reemplazan las pruebas de servicios externos ni la revisión visual pendiente.
+
+## Orientación comercial Digital Amenities — 4 de octubre de 2026
+
+- Portada reorientada a formación práctica para profesiones y negocios: cursos como oferta principal, cuatro recorridos por objetivo, recursos como complemento, información condicional sobre certificados y servicios de la empresa.
+- Diseño propio con el monograma existente, retícula discreta, material en tono papel y filas editoriales; se elimina el código decorativo y el recorrido fijado que requería varias pantallas de scroll. Los tres pasos de compra y aprendizaje quedan visibles.
+- Nuevas páginas `/recursos` y `/soluciones`, menú móvil completo y accesos protegidos `/mi-aula/recursos` y `/mi-aula/certificados`. Los productos, consultas y certificados están claramente identificados como funciones en preparación; el formulario de consultas no permite envíos.
+- Categorías sugeridas en el editor, búsqueda sin distinción de acentos y filtros por objetivo que aceptan categorías existentes y nuevas. Se conservan las categorías y los datos guardados.
+- Cursos de ejemplo mantenidos como borradores y excluidos del catálogo público. Un error al consultar el catálogo muestra indisponibilidad, sin reemplazarlo por datos ficticios ni impedir la presentación del resto de la portada.
+- Compilación de producción, TypeScript y formato aprobados. No hubo cambios de base de datos, pagos, archivos privados ni emisión de certificados en esta etapa de diseño.
+- Inspección visual en navegador pendiente por el permiso de acceso local rechazado en la sesión anterior. No se reintentó mediante otro navegador o mecanismo.
+- Alcance funcional restante documentado en [platform-scope.md](platform-scope.md); requisitos originales conservados en [platform-brief.md](platform-brief.md).
+
+## Adaptación visual AgentQL — 4 de octubre de 2026
+
+- Nuevo sistema visual documentado en [design.md](design.md): Figtree, Inter e IBM Plex Mono, superficies azul oscuro, botones blancos en píldora y luces violetas/rosas limitadas a las cabeceras.
+- Portada y resumen administrativo con ventanas decorativas del aula y del editor. Reemplazan las ilustraciones con Dither Veil; las tarjetas dejan de usar Spotlight Card. Se conserva el código y la licencia de React Bits en el repositorio.
+- Catálogo, detalle de curso, acceso, formularios, aula y administración reciben los tokens y componentes compartidos. Se mantienen las rutas y la lógica de negocio.
+- Compilación de producción, TypeScript y formato de los archivos editados aprobados.
+- La revisión visual de esta versión en navegador queda pendiente: el acceso a la vista local fue rechazado por permisos del navegador. Las verificaciones visuales registradas más abajo corresponden a versiones anteriores.
+- Las pruebas funcionales de servicios externos se reservan para la etapa posterior solicitada por el propietario.
+
 ## Actualización — 1 de octubre de 2026
 
 - Proyecto publicado en la rama `main` de [digitalamenitiessas-lang/Cursos-DA](https://github.com/digitalamenitiessas-lang/Cursos-DA). Primer commit: `c085e86`.

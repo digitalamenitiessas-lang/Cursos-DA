@@ -1,47 +1,42 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import DitherVeil from '@/components/react-bits/dither-veil';
+import { BookOpen, Check, FileText, Play, Plus } from 'lucide-react';
 
 export function StudioArtwork() {
-  const [enabled, setEnabled] = useState(false);
-  useEffect(() => {
-    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let supported = false;
-    try {
-      const context = document.createElement('canvas').getContext('webgl2');
-      supported = Boolean(context);
-      context?.getExtension('WEBGL_lose_context')?.loseContext();
-    } catch {
-      /* The static artwork remains visible if WebGL is unavailable. */
-    }
-    const update = () => setEnabled(supported && !preference.matches);
-    update();
-    preference.addEventListener('change', update);
-    return () => preference.removeEventListener('change', update);
-  }, []);
   return (
     <div className="studio-artwork" aria-hidden="true">
-      <div className="studio-artwork-static" />
-      {enabled && (
-        <DitherVeil
-          src="/brand/studio-art.svg"
-          fit="cover"
-          pattern="bayer"
-          pixelSize={3}
-          levels={4}
-          inkColor="#14131d"
-          paperColor="#c2afe5"
-          revealRadius={95}
-          rimColor="#bca3e9"
-          rim={0.15}
-          linger={0.45}
-          clickBurst={true}
-        />
-      )}
-      <span className="studio-artwork-caption">
-        IDEAS EN MOVIMIENTO <span>DA / 01</span>
-      </span>
+      <div className="studio-preview-window">
+        <div className="studio-preview-window-bar">
+          <BookOpen size={14} />
+          <span>Tu próximo curso</span>
+          <span className="studio-preview-badge">Borrador</span>
+        </div>
+        <div className="studio-preview-window-body">
+          <span className="eyebrow">DEL CONOCIMIENTO A LA PRÁCTICA</span>
+          <h2>
+            Una idea.
+            <br />
+            Muchas posibilidades.
+          </h2>
+          <div className="studio-preview-lesson">
+            <Play size={15} />
+            <span>Tu primera clase</span>
+            <Check size={14} />
+          </div>
+          <div className="studio-preview-lesson">
+            <FileText size={15} />
+            <span>Material para ir más allá</span>
+            <Check size={14} />
+          </div>
+          <span className="studio-preview-add">
+            <Plus size={14} /> Un nuevo módulo
+          </span>
+        </div>
+      </div>
+      <div className="studio-preview-note">
+        <Check size={17} />
+        <span>
+          Todo empieza con lo que sabés.<small>Vos creás. Nosotros te acompañamos.</small>
+        </span>
+      </div>
     </div>
   );
 }

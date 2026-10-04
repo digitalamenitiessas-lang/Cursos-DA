@@ -1,4 +1,5 @@
 -- Opt-in fixture for a DEVELOPMENT database only. Not part of migrations.
+-- Example courses stay in draft and never enter the public catalog automatically.
 -- psql "$DEV_DATABASE_URL" -v ON_ERROR_STOP=1 -c "SET app.allow_development_seed='true'" -f supabase/dev/seed.sql
 begin;
 do $$ begin
@@ -8,9 +9,9 @@ do $$ begin
 end $$;
 
 insert into public.courses(id,slug,title,subtitle,description,category,level,price_cents,instructor,learning_outcomes,requirements,status,featured) values
- ('d0000000-0000-4000-8000-000000000001','demo-desarrollo-web','[DEMO] Desarrollo web de cero a producción','Convertí tus ideas en experiencias que funcionan.','Curso ficticio para explorar la academia en desarrollo. No contiene videos ni se vende en producción.','Desarrollo','Inicial',5490000,'Lucía Méndez (personaje ficticio)',array['Crear interfaces adaptables','Programar interacciones con JavaScript','Publicar tu primer proyecto'],array['Computadora con acceso a internet'],'published',true),
- ('d0000000-0000-4000-8000-000000000002','demo-diseno-producto','[DEMO] Diseño UX/UI: de la idea al producto','Diseñá con intención, creá para las personas.','Curso ficticio para probar el catálogo y la edición. Agregá material propio para verificar el aula.','Diseño','Inicial',4290000,'Tomás Ríos (personaje ficticio)',array['Investigar necesidades reales','Diseñar componentes','Crear un prototipo interactivo'],array['No requiere experiencia previa'],'published',true),
- ('d0000000-0000-4000-8000-000000000003','demo-datos-python','[DEMO] Análisis de datos con Python','Encontrá las historias que se esconden en los datos.','Curso de ejemplo sin contenido audiovisual. Esta ficha sólo debe existir en la base de desarrollo.','Datos','Intermedio',5990000,'Valentina Paz (personaje ficticio)',array['Limpiar datasets','Analizar datos','Comunicar hallazgos'],array['Conocimientos básicos de programación'],'published',true)
+ ('d0000000-0000-4000-8000-000000000001','demo-desarrollo-web','[DEMO] Desarrollo web de cero a producción','Convertí tus ideas en experiencias que funcionan.','Curso ficticio para explorar la academia en desarrollo. No contiene videos ni se vende en producción.','Desarrollo','Inicial',5490000,'Lucía Méndez (personaje ficticio)',array['Crear interfaces adaptables','Programar interacciones con JavaScript','Publicar tu primer proyecto'],array['Computadora con acceso a internet'],'draft',true),
+ ('d0000000-0000-4000-8000-000000000002','demo-diseno-producto','[DEMO] Diseño UX/UI: de la idea al producto','Diseñá con intención, creá para las personas.','Curso ficticio para probar el catálogo y la edición. Agregá material propio para verificar el aula.','Diseño','Inicial',4290000,'Tomás Ríos (personaje ficticio)',array['Investigar necesidades reales','Diseñar componentes','Crear un prototipo interactivo'],array['No requiere experiencia previa'],'draft',true),
+ ('d0000000-0000-4000-8000-000000000003','demo-datos-python','[DEMO] Análisis de datos con Python','Encontrá las historias que se esconden en los datos.','Curso de ejemplo sin contenido audiovisual. Esta ficha sólo debe existir en la base de desarrollo.','Datos','Intermedio',5990000,'Valentina Paz (personaje ficticio)',array['Limpiar datasets','Analizar datos','Comunicar hallazgos'],array['Conocimientos básicos de programación'],'draft',true)
 on conflict(id) do nothing;
 
 insert into public.modules(id,course_id,title,position) values

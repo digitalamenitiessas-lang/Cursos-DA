@@ -12,6 +12,8 @@ export default async function StudentLayout({ children }: { children: React.Reac
       <div className="container-wide">
         <nav className="workspace-nav" aria-label="Mi cuenta">
           <Link href="/mi-aula">Mis cursos</Link>
+          <Link href="/mi-aula/recursos">Mis recursos</Link>
+          <Link href="/mi-aula/certificados">Mis certificados</Link>
           <Link href="/mi-aula/compras">Mis compras</Link>
           <Link href="/mi-aula/perfil">Mi perfil</Link>
           {admin && <Link href="/admin">Administración</Link>}

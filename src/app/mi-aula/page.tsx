@@ -15,9 +15,9 @@ export default async function MyCourses() {
   return (
     <>
       <div className="page-heading">
-        <span className="eyebrow">TU ESPACIO PARA CRECER</span>
-        <h1>{name ? `Hola, ${name}.` : 'Tu próximo paso te espera.'}</h1>
-        <p>Una clase a la vez. Seguí construyendo tu camino.</p>
+        <span className="eyebrow">MI CUENTA / MIS CURSOS</span>
+        <h1>{name ? `Hola, ${name}.` : 'Mis cursos.'}</h1>
+        <p>Retomá tus clases y consultá tus materiales de aprendizaje.</p>
       </div>
       {recent && recentCourse && (
         <section className="panel mb-8 flex flex-wrap items-center justify-between gap-5">
@@ -78,7 +78,7 @@ export default async function MyCourses() {
       ) : (
         <div className="empty-state">
           <BookOpen size={32} />
-          <h2>Tu próximo desafío está esperando.</h2>
+          <h2>Todavía no tenés cursos en tu cuenta.</h2>
           <p>Cuando tengas acceso a un curso, vas a encontrarlo acá junto con tu progreso.</p>
           <Link className="button" href="/cursos">
             Explorar cursos

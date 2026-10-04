@@ -106,9 +106,9 @@ export function AdminWorkspace({
           <div className="studio-sidebar-note">
             <span className="studio-status-dot" />
             <span>
-              El próximo aprendizaje
+              Formación práctica.
               <br />
-              empieza con vos.
+              Contenido bien organizado.
             </span>
           </div>
           <Link href="/cursos" className="studio-external">

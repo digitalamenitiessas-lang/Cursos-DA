@@ -12,7 +12,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Abrir http://localhost:3000. Para explorar el diseño sin servicios, establecer `DEMO_MODE=true` en `.env.local`: sólo muestra catálogo ficticio en desarrollo y desactiva la compra. Con Supabase configurado o en producción nunca se cargan esos ejemplos. No existe inicio de sesión ni acceso privado ficticio.
+Abrir http://localhost:3000. El diseño público funciona sin cursos publicados y muestra estados vacíos explícitos. Los cursos de ejemplo permanecen como borradores y fuera del catálogo público, incluso con `DEMO_MODE=true`. No existe inicio de sesión ni acceso privado ficticio. La vista `/studio-preview` permite revisar administración sólo en desarrollo.
 
 ```sh
 npm run typecheck
@@ -33,20 +33,21 @@ Comenzar por crear Supabase, aplicar las tres migraciones, configurar `.env.loca
 
 ## Recorridos
 
-- `/`, `/cursos`, `/cursos/[slug]`: catálogo, búsqueda/filtros, ficha y temario público.
+- `/`, `/cursos`, `/cursos/[slug]`: portada comercial, catálogo, búsqueda/filtros por objetivo, ficha y temario público.
+- `/recursos`, `/soluciones`: presentación de recursos digitales y servicios; funciones comerciales nuevas en preparación.
 - `/registro`, `/ingresar`, `/recuperar`, `/actualizar-clave`: cuentas verificadas y recuperación.
-- `/mi-aula`: cursos activos, retomar y progreso; `/mi-aula/compras`, `/mi-aula/perfil`.
+- `/mi-aula`: cursos activos, retomar y progreso; `/mi-aula/compras`, `/mi-aula/perfil`. `/mi-aula/recursos` y `/mi-aula/certificados` muestran el estado de preparación de esas funciones.
 - `/mi-aula/[courseId]/[lessonId]`: aula con video firmado, posición, navegación y recursos.
 - `/admin`: métricas; `/admin/cursos`, `/admin/alumnos`, `/admin/pagos`.
 - `/pago/resultado?order=…`: consulta al servidor; la URL jamás habilita acceso.
 
-Nombre/logo en `src/lib/brand.ts` y `src/components/brand.tsx`; originales de Digital Amenities en `public/brand/`. El sello se usa en la navegación y el logo completo al pie, con adaptación visual al fondo oscuro mediante CSS. El favicon `src/app/icon.svg` conserva el monograma original y adapta su color al tema del navegador. Tokens cromáticos en `src/app/globals.css`. Los ejemplos están aislados en `src/lib/data/demo.ts` y el seed explícito en `supabase/dev/seed.sql`.
+Nombre/logo en `src/lib/brand.ts` y `src/components/brand.tsx`; originales de Digital Amenities en `public/brand/`. El sello se usa en la navegación y al pie, y el monograma en las piezas gráficas, con adaptación visual al fondo oscuro mediante CSS. El favicon `src/app/icon.svg` conserva el monograma original y adapta su color al tema del navegador. Tokens cromáticos en `src/app/globals.css`. Los ejemplos están aislados en `src/lib/data/demo.ts` y el seed explícito en `supabase/dev/seed.sql`.
 
 ## Revisar el diseño del panel
 
-En desarrollo, `/studio-preview` permite revisar la navegación, el efecto Dither Veil, el formulario y las cargas sin iniciar sesión. Está identificado como una vista de diseño, no muestra datos administrativos y desactiva guardados y transferencias. En producción responde 404. El panel operativo `/admin` siempre exige una cuenta verificada con rol administrador.
+En desarrollo, `/studio-preview` permite revisar la navegación, el resumen administrativo, el formulario y las cargas sin iniciar sesión. Está identificado como una vista de diseño, no muestra datos administrativos y desactiva guardados y transferencias. En producción responde 404. El panel operativo `/admin` siempre exige una cuenta verificada con rol administrador.
 
-React Bits también está integrado en el sitio público: Dither Veil en la ilustración interactiva de la portada y Spotlight Card en las tarjetas del catálogo. La portada conserva la ilustración estática sin WebGL o con movimiento reducido; el efecto se carga por separado, pausa fuera de vista y mantiene el scroll nativo en celular. Los componentes adaptados y su licencia están en `src/components/react-bits/`.
+La portada utiliza piezas gráficas propias con el monograma de la marca, una retícula y material en tono papel. La explicación de compra y aprendizaje muestra sus tres pasos sin requerir varias pantallas de scroll. Las tarjetas conservan bordes y elevación discretos, con movimiento reducido respetado. Los componentes históricos de React Bits y su licencia se mantienen en `src/components/react-bits/`, aunque ya no se usan en estas pantallas.
 
 ## Modelo de seguridad
 
@@ -55,3 +56,9 @@ React Bits también está integrado en el sitio público: Dither Veil en la ilus
 ## Estado de verificación
 
 Ver [registro de entrega](docs/verification.md). Las pruebas locales no acreditan cobros, correos, uploads ni reproducción contra cuentas reales. Esas pruebas requieren credenciales y recursos del propietario.
+
+## Orientación comercial y etapa de diseño
+
+La plataforma presenta formación práctica, recursos digitales y soluciones a medida. Esta etapa incorpora la navegación, las páginas comerciales y los estados de preparación de Mis recursos y Mis certificados. La venta independiente de archivos, la emisión/verificación de certificados y el guardado de consultas requieren la ampliación funcional documentada en [docs/platform-scope.md](docs/platform-scope.md). El formulario de soluciones no recibe envíos todavía. La implementación existente de compra, aula y progreso se conserva.
+
+Dirección visual en [docs/design.md](docs/design.md); requisitos del propietario en [docs/platform-brief.md](docs/platform-brief.md).

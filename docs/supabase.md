@@ -93,7 +93,7 @@ Los alumnos no descargan directamente el bucket privado, aunque conozcan el path
 
 ## Datos ficticios y pruebas
 
-El catálogo sin servicios puede usar `DEMO_MODE=true` **sólo en desarrollo**; esa vista no procesa pagos. Para probar CRUD sobre una base persistente de desarrollo existe `supabase/dev/seed.sql`, fuera de las migraciones y de la ruta convencional de seed automático. Sus cursos están marcados `[DEMO]`, no incluye pagos ni permisos, y exige una habilitación explícita:
+Los ejemplos de `src/lib/data/demo.ts` permanecen como borradores y no aparecen en el catálogo público. `DEMO_MODE=true` se admite **sólo en desarrollo** y no procesa pagos. Para probar CRUD sobre una base persistente de desarrollo existe `supabase/dev/seed.sql`, fuera de las migraciones y de la ruta convencional de seed automático. Sus cursos están marcados `[DEMO]` y se crean como borradores, no incluye pagos ni permisos, y exige una habilitación explícita:
 
 ```sh
 psql "$DEV_DATABASE_URL" -v ON_ERROR_STOP=1 \
@@ -101,7 +101,7 @@ psql "$DEV_DATABASE_URL" -v ON_ERROR_STOP=1 \
   -f supabase/dev/seed.sql
 ```
 
-No lo ejecutes en producción. Agregá videos de prueba desde administración; los datos ficticios no inventan archivos ni IDs de Stream.
+No lo ejecutes en producción. Si ya cargaste estos ejemplos con una versión anterior, revisá su estado desde administración: el seed no modifica los datos existentes. Agregá videos de prueba desde administración; los datos ficticios no inventan archivos ni IDs de Stream.
 
 Para las políticas y transacciones, `supabase/tests/security.sql` crea sus propias fixtures dentro de una transacción que termina con rollback:
 

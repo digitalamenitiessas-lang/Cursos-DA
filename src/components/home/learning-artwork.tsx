@@ -1,53 +1,44 @@
-'use client';
-
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
-
-const DitherVeil = dynamic(() => import('@/components/react-bits/dither-veil'), { ssr: false });
+import { ArrowUpRight, CornerDownRight, Workflow } from 'lucide-react';
 
 export function LearningArtwork() {
-  const [interactive, setInteractive] = useState(false);
-  useEffect(() => {
-    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let supported = false;
-    try {
-      const context = document.createElement('canvas').getContext('webgl2');
-      supported = Boolean(context);
-      context?.getExtension('WEBGL_lose_context')?.loseContext();
-    } catch {
-      // Keep the illustration visible on devices without WebGL.
-    }
-    const update = () => setInteractive(supported && !preference.matches);
-    update();
-    preference.addEventListener('change', update);
-    return () => preference.removeEventListener('change', update);
-  }, []);
-
   return (
-    <div className="learning-artwork" aria-hidden="true">
-      <div className="learning-artwork-image" />
-      {interactive && (
-        <DitherVeil
-          src="/brand/studio-art.svg"
-          className="learning-artwork-veil"
-          fit="cover"
-          pattern="bayer"
-          pixelSize={3}
-          levels={5}
-          inkColor="#0b0d12"
-          paperColor="#bba6e4"
-          revealRadius={105}
-          linger={0.65}
-          rimColor="#dec8ff"
-          rim={0.12}
-          clickBurst
-        />
-      )}
-      <div className="learning-artwork-label">
-        <span>IDEAS QUE TOMAN FORMA</span>
-        <span>DA / 01</span>
+    <div className="learning-artwork workbench" aria-hidden="true">
+      <div className="workbench-grid" />
+      <div className="workbench-monogram" />
+      <div className="workbench-heading">
+        <span>DA / EN LA PRÁCTICA</span>
+        <ArrowUpRight size={19} />
       </div>
-      <span className="learning-artwork-tag">Tu próxima posibilidad.</span>
+      <div className="workbench-title">
+        Una tarea.
+        <br />
+        Una herramienta.
+        <br />
+        <span>Algo resuelto.</span>
+      </div>
+      <div className="workbench-connection">
+        <span />
+        <CornerDownRight size={24} />
+      </div>
+      <div className="workbench-sheet">
+        <div className="workbench-sheet-top">
+          <Workflow size={19} />
+          <span>DEL APRENDIZAJE AL TRABAJO</span>
+        </div>
+        <div>
+          <span>Entendé</span>
+          <i />
+          <span>Probá</span>
+          <i />
+          <span>Aplicá</span>
+        </div>
+        <p>
+          Una web, un proceso,
+          <br />
+          un material que puedas usar.
+        </p>
+      </div>
+      <span className="workbench-footnote">FORMACIÓN + HERRAMIENTAS + CRITERIO</span>
     </div>
   );
 }

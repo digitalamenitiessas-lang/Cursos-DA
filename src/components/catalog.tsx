@@ -1,18 +1,36 @@
 'use client';
 import { useState, type ReactNode } from 'react';
 import { Search } from 'lucide-react';
+import { learningPaths, matchesLearningPath, normalizeSearch } from '@/lib/offering';
 type CatalogEntry = { id: string; search: string; category: string; node: ReactNode };
-export function Catalog({ entries }: { entries: CatalogEntry[] }) {
+export function Catalog({
+  entries,
+  initialGoal = '',
+}: {
+  entries: CatalogEntry[];
+  initialGoal?: string;
+}) {
   const [q, setQ] = useState(''),
     [category, setCategory] = useState('Todos');
+  const [goal, setGoal] = useState(initialGoal);
+  const selectedPath = learningPaths.find((path) => path.id === goal);
   const categories = [...new Set(entries.map((e) => e.category))];
   const visible = entries.filter(
     (e) =>
-      e.search.includes(q.toLocaleLowerCase('es').trim()) &&
-      (category === 'Todos' || e.category === category),
+      normalizeSearch(e.search).includes(normalizeSearch(q)) &&
+      (category === 'Todos' || e.category === category) &&
+      matchesLearningPath(e.category, goal),
   );
   return (
     <>
+      {selectedPath && (
+        <div className="catalog-goal">
+          <span>Objetivo: {selectedPath.title}</span>
+          <button type="button" onClick={() => setGoal('')}>
+            Ver todos los objetivos
+          </button>
+        </div>
+      )}
       <div className="catalog-filters">
         <label className="search-field">
           <Search />
@@ -54,6 +72,7 @@ export function Catalog({ entries }: { entries: CatalogEntry[] }) {
             onClick={() => {
               setQ('');
               setCategory('Todos');
+              setGoal('');
             }}
           >
             Limpiar filtros
