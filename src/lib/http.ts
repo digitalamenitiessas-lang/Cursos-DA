@@ -1,5 +1,4 @@
 import { ZodError } from 'zod';
-import { appUrl } from './env';
 export class HttpError extends Error {
   constructor(
     public status: number,
@@ -9,7 +8,7 @@ export class HttpError extends Error {
   }
 }
 export function assertSameOrigin(request: Request) {
-  if (request.headers.get('origin') !== new URL(appUrl()).origin)
+  if (request.headers.get('origin') !== new URL(request.url).origin)
     throw new HttpError(403, 'Solicitud no autorizada.');
 }
 export function apiError(error: unknown) {

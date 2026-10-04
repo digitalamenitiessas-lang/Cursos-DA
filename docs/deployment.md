@@ -13,7 +13,7 @@
 - Framework Next.js, directorio raíz del repositorio, Node 22 o posterior, comando `npm run build`.
 - La compilación usa Webpack soportado por Next.js para evitar un problema de procesos de Turbopack en el entorno local restringido. El servidor de desarrollo usa Turbopack.
 - Cargar las variables de `.env.example` de los servicios que se usarán en cada entorno. YouTube no requiere credenciales; las variables de Cloudflare sólo son necesarias para cargas y reproducción de Stream. `NEXT_PUBLIC_*` se incorporan al cliente durante la compilación: después de cambiarlas hay que desplegar otra vez. Las claves privadas nunca llevan ese prefijo.
-- `NEXT_PUBLIC_APP_URL` debe ser el origen HTTPS exacto del ambiente. Se usa para OAuth/correos, retorno de pago, webhook y controles de origen. Preferir dominios estables para staging y producción.
+- `NEXT_PUBLIC_APP_URL` debe ser el origen HTTPS exacto del ambiente. Se usa para OAuth/correos, retorno de pago y webhook. Las APIs comprueban que el encabezado `Origin` coincida con el origen de la URL de la solicitud, para admitir el dominio activo y rechazar solicitudes de otros sitios. Preferir dominios estables para staging y producción.
 - `DEMO_MODE=false`. Además, la aplicación ignora los ejemplos cuando está en producción o Supabase está configurado.
 - Configurar en Supabase las URLs de callback y en Stream los dominios autorizados, incluyendo el dominio final. No habilitar comodines generales.
 - En Mercado Pago, registrar `https://tu-dominio/api/webhooks/mercadopago`, eventos de pago y el secreto de ese ambiente.
