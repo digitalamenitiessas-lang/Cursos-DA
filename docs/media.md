@@ -1,5 +1,15 @@
 # Videos y materiales
 
+## YouTube
+
+Crear una clase, abrir **Editar clase y archivos**, pegar su enlace en **Video de la clase · YouTube** y guardar. Usar **Probar video guardado** para verificar la inserción antes de publicar. No requiere una clave de YouTube ni configurar Cloudflare. El reproductor utiliza la IFrame API oficial y el dominio `youtube-nocookie.com`, conserva posición, guarda al pausar y marca finalización al terminar. Los controles, enlaces y políticas de reproducción siguen siendo los de YouTube.
+
+Usar videos **ocultos/no listados** con inserción habilitada. Cualquier persona con el enlace puede verlos fuera del aula; los videos privados tienen sus propios permisos de YouTube y no se habilitan por comprar un curso. No hay restricción de reproducción exclusiva por dominio para un video oculto. Referencia: [privacidad de videos](https://support.google.com/youtube/answer/157177), [IFrame Player API](https://developers.google.com/youtube/iframe_api_reference).
+
+El identificador sólo se entrega después de `authorizeLesson`, salvo muestras gratuitas explícitas de cursos publicados. Nunca se agrega a `lessons`, al temario público ni a la descripción. `lesson_videos.stream_uid` conserva su nombre histórico, pero admite referencias privadas `youtube:<videoId>:<lessonId>`; los valores anteriores siguen siendo IDs de Cloudflare. La referencia por clase permite reutilizar un video sin romper la restricción de unicidad existente. Esta adaptación no requiere migraciones y conserva las políticas RLS de `lesson_videos`. Los procesos externos que lean esa columna deben distinguir el prefijo antes de llamar a Cloudflare.
+
+La duración de una clase con YouTube se carga manualmente. Usar la duración real o dejarla en 0: una duración menor que el video limita la posición guardada por el RPC existente. El estado `ready` de YouTube indica que el enlace se guardó, no que se haya verificado su disponibilidad. La vista previa y el reproductor muestran fallos de inserción; una prueba con el video del propietario sigue siendo necesaria.
+
 ## Cloudflare Stream
 
 1. Activar Stream en una cuenta Cloudflare. Crear API token con permiso Stream Edit limitado a esa cuenta.

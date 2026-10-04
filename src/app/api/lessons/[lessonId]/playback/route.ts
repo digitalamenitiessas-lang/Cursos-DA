@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { cfRequest } from '@/lib/media/cloudflare';
 import { playbackTtl } from '@/lib/media/security';
 import { assertSameOrigin, apiError, HttpError } from '@/lib/http';
+import { readVideoSource } from '@/lib/media/video-source';
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ lessonId: string }> },
@@ -19,6 +20,12 @@ export async function POST(
       .maybeSingle();
     if (error) throw error;
     if (!video) throw new HttpError(404, 'El video todavía no está disponible.');
+    const source = readVideoSource(video.stream_uid, lessonId);
+    if (source.provider === 'youtube')
+      return Response.json(
+        { status: 'ready', ...source },
+        { headers: { 'Cache-Control': 'private, no-store', Vary: 'Cookie' } },
+      );
     if (video.status !== 'ready')
       return Response.json(
         {
@@ -38,7 +45,7 @@ export async function POST(
       body: JSON.stringify({ exp: expiresAt, downloadable: false }),
     });
     return Response.json(
-      { status: 'ready', token: result.token, expiresAt },
+      { status: 'ready', provider: 'cloudflare', token: result.token, expiresAt },
       { headers: { 'Cache-Control': 'private, no-store', Vary: 'Cookie' } },
     );
   } catch (error) {

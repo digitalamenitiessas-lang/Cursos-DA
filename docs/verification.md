@@ -1,5 +1,12 @@
 # Registro de verificación — 29 de septiembre de 2026
 
+## Videos de YouTube — 4 de octubre de 2026
+
+- Editor de clases con enlace de YouTube, confirmación de reemplazo y vista previa autenticada. Cloudflare Stream conserva la carga de archivos como alternativa. Sin migraciones adicionales.
+- Reproductor con la IFrame API oficial, posición inicial, guardado al pausar y durante reproducción, finalización y mensajes de error. Se mantiene el RPC existente de progreso, incluyendo su límite de duración configurada.
+- `npm run build`: compilación de producción y TypeScript aprobados. `npm test`: 28 pruebas aprobadas, incluyendo formatos de YouTube, rechazo de dominios falsos/HTML, referencias privadas por clase y carga/reintentos del SDK con entorno simulado. Formato y diff sin incidencias.
+- Falta comprobar guardado autenticado y reproducción/progreso con un video real del canal del propietario. Las pruebas del SDK son unitarias; no se verificó visualmente el reproductor en navegador. Los videos ocultos pueden verse fuera del aula por cualquiera que obtenga el enlace.
+
 ## Verificación previa a publicación — 4 de octubre de 2026
 
 - `npm run build`: compilación de producción y validación TypeScript completadas.

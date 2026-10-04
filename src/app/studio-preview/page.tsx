@@ -4,6 +4,7 @@ import { AdminWorkspace } from '@/components/admin/workspace';
 import { StudioWelcome } from '@/components/admin/studio-welcome';
 import { CourseForm } from '@/components/admin/course-form';
 import { UploadControl } from '@/components/admin/upload-control';
+import { LessonVideoControl } from '@/components/admin/lesson-video-control';
 import '@/components/admin/admin.css';
 export default async function StudioPreview({
   searchParams,
@@ -27,7 +28,7 @@ export default async function StudioPreview({
         ) : view === 'archivos' ? (
           <section className="grid gap-5 md:grid-cols-2">
             <UploadControl preview kind="cover" />
-            <UploadControl preview kind="video" />
+            <LessonVideoControl preview lessonId="design-preview" />
             <UploadControl preview kind="resource" />
           </section>
         ) : (

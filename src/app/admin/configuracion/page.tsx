@@ -21,6 +21,14 @@ export default async function AdminConfiguration() {
       description: 'Registro de alumnos, cursos, progreso y materiales protegidos.',
     },
     {
+      title: 'Clases con YouTube',
+      subtitle: 'YouTube',
+      Icon: Play,
+      ready: true,
+      description:
+        'Pegá el enlace de un video oculto con inserción permitida. No requiere clave API. El enlace puede compartirse fuera del aula.',
+    },
+    {
       title: 'Videos privados',
       subtitle: 'Cloudflare Stream',
       Icon: Play,

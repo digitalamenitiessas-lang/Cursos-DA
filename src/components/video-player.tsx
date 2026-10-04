@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Stream, type StreamPlayerApi } from '@cloudflare/stream-react';
 import { Check, MonitorPlay, RefreshCw } from 'lucide-react';
+import { YouTubePlayer } from './youtube-player';
 export function VideoPlayer({
   lessonId,
   initialPosition = 0,
@@ -21,6 +22,7 @@ export function VideoPlayer({
     [saving, setSaving] = useState(false),
     [saveError, setSaveError] = useState(''),
     [token, setToken] = useState(''),
+    [youtubeId, setYoutubeId] = useState(''),
     [message, setMessage] = useState('Preparando tu clase…'),
     [reload, setReload] = useState(0);
   const resume = useRef(initialPosition);
@@ -32,12 +34,16 @@ export function VideoPlayer({
         const d = await r.json();
         if (!active) return;
         if (!r.ok || d.status !== 'ready') {
+          setToken('');
+          setYoutubeId('');
+          setExpiresAt(0);
           setMessage(d.message || d.error || 'El video está temporalmente no disponible.');
           return;
         }
         resume.current = position.current;
-        setToken(d.token);
-        setExpiresAt(d.expiresAt);
+        setYoutubeId(d.provider === 'youtube' ? d.videoId : '');
+        setToken(d.provider === 'youtube' ? '' : d.token);
+        setExpiresAt(d.provider === 'youtube' ? 0 : d.expiresAt);
       })
       .catch(() => {
         if (active) setMessage('No pudimos conectar con el reproductor. Intentá nuevamente.');
@@ -95,10 +101,26 @@ export function VideoPlayer({
     }
     setSaving(false);
   }
+  function timeUpdate(seconds: number) {
+    position.current = seconds;
+    if (Date.now() - lastSaved.current > 15000) {
+      lastSaved.current = Date.now();
+      void save();
+    }
+  }
   return (
     <>
       <div className="classroom-player">
-        {token ? (
+        {youtubeId ? (
+          <YouTubePlayer
+            key={youtubeId}
+            videoId={youtubeId}
+            startTime={resume.current}
+            onTimeUpdate={timeUpdate}
+            onPause={() => void save()}
+            onEnded={() => void complete()}
+          />
+        ) : token ? (
           <Stream
             key={token}
             streamRef={streamRef}
@@ -108,11 +130,7 @@ export function VideoPlayer({
             primaryColor="#a18aff"
             title="Reproductor de la clase"
             onTimeUpdate={() => {
-              position.current = streamRef.current?.currentTime ?? position.current;
-              if (Date.now() - lastSaved.current > 15000) {
-                lastSaved.current = Date.now();
-                void save();
-              }
+              timeUpdate(streamRef.current?.currentTime ?? position.current);
             }}
             onPause={() => void save()}
             onEnded={() => void complete()}

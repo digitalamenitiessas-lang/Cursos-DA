@@ -2,7 +2,7 @@
 
 ## Estado actual — 4 de octubre de 2026
 
-Se conserva el stack Next.js, React, TypeScript, Supabase, Mercado Pago y Cloudflare Stream. El repositorio tiene catálogo de cursos, administración de cursos/módulos/clases, compra, verificación de pagos desde el proveedor, accesos, video protegido, materiales de clase con URLs firmadas y progreso. La existencia de la implementación no certifica que los servicios externos estén configurados o probados en producción.
+Se conserva el stack Next.js, React, TypeScript, Supabase, Mercado Pago y Cloudflare Stream, con YouTube como opción principal para vincular videos de clases. El repositorio tiene catálogo de cursos, administración de cursos/módulos/clases, compra, verificación de pagos desde el proveedor, accesos, reproducción de YouTube dentro del aula, video firmado con Stream como alternativa, materiales de clase con URLs firmadas y progreso. YouTube oculto no ofrece exclusividad de reproducción: cualquiera con el enlace puede verlo. La existencia de la implementación no certifica que los servicios externos estén configurados o probados en producción.
 
 Esta etapa aplica la orientación comercial al diseño y a los contenidos, manteniendo la prioridad indicada por el propietario: primero diseño, después verificación funcional y ajustes.
 

@@ -29,7 +29,7 @@ bash supabase/tests/run-local.sh  # requiere PostgreSQL 17; ver docs/supabase.md
 4. [Administración y definición de métricas](docs/admin.md).
 5. [Despliegue y verificación de extremo a extremo](docs/deployment.md).
 
-Comenzar por crear Supabase, aplicar las tres migraciones, configurar `.env.local`, registrarse/verificar correo y promover ese usuario desde SQL de servidor. Luego completar pagos/videos. `.env.local` está excluido de Git.
+Comenzar por crear Supabase, aplicar las tres migraciones, configurar `.env.local`, registrarse/verificar correo y promover ese usuario desde SQL de servidor. Las clases admiten enlaces de YouTube ocultos con inserción permitida, sin clave API ni migración adicional. Cloudflare Stream queda como alternativa para carga de archivos y reproducción firmada. Luego completar la configuración de pagos. `.env.local` está excluido de Git.
 
 ## Recorridos
 
@@ -37,7 +37,7 @@ Comenzar por crear Supabase, aplicar las tres migraciones, configurar `.env.loca
 - `/recursos`, `/soluciones`: presentación de recursos digitales y servicios; funciones comerciales nuevas en preparación.
 - `/registro`, `/ingresar`, `/recuperar`, `/actualizar-clave`: cuentas verificadas y recuperación.
 - `/mi-aula`: cursos activos, retomar y progreso; `/mi-aula/compras`, `/mi-aula/perfil`. `/mi-aula/recursos` y `/mi-aula/certificados` muestran el estado de preparación de esas funciones.
-- `/mi-aula/[courseId]/[lessonId]`: aula con video firmado, posición, navegación y recursos.
+- `/mi-aula/[courseId]/[lessonId]`: aula con YouTube o video firmado de Stream, posición, navegación y recursos.
 - `/admin`: métricas; `/admin/cursos`, `/admin/alumnos`, `/admin/pagos`.
 - `/pago/resultado?order=…`: consulta al servidor; la URL jamás habilita acceso.
 

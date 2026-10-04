@@ -9,6 +9,9 @@ El panel está en `/admin`. Todas sus páginas verifican sesión, correo verific
 - Cada módulo y clase se guarda por separado. Las flechas cambian el orden mediante una transacción que verifica el conjunto completo de IDs. No hay límite de clases impuesto por la aplicación; los listados internos se leen por páginas para superar el límite de respuesta por defecto de Supabase.
 - No se ofrece eliminación irreversible de contenido vendido.
 - Una clase puede habilitarse como muestra pública; la casilla explica que su video queda disponible sin compra.
+- En **Editar clase y archivos → Video de la clase · YouTube**, pegar un enlace de video y pulsar **Guardar video de YouTube**. Se admiten enlaces normales, cortos, Shorts, directos e inserciones, o el ID del video. No se acepta HTML de un iframe. **Probar video guardado** abre el reproductor dentro del editor, incluso para cursos en borrador, sin guardar progreso del administrador.
+- Subir los videos a YouTube como **ocultos/no listados**, con inserción permitida. Los videos privados no sirven como acceso automático para todos los alumnos. Un enlace oculto puede compartirse y verse fuera de la plataforma; el sistema protege el acceso al aula y la entrega inicial del identificador, no el enlace una vez que el alumno lo conoce.
+- La duración de YouTube se carga manualmente en la clase: usar la duración real o dejar 0 hasta conocerla. El progreso mantiene el límite existente de duración configurada. Guardar un enlace no confirma que el video exista o permita inserción: comprobarlo con la vista previa. Reemplazar un video requiere confirmación.
 - Las portadas y materiales se transfieren desde el navegador a Supabase Storage con una autorización temporal; el backend confirma que el archivo existe antes de guardar la portada o el recurso. Los videos viajan directamente a Cloudflare Stream mediante TUS, con progreso y reintentos. No pasan por el servidor de Next.js.
 - El panel consulta el estado del video cada 12 segundos durante el procesamiento. Mantener abierta la página hasta que termine la carga; después, el procesamiento continúa en Cloudflare. Hay actualización manual del estado.
 
@@ -57,7 +60,7 @@ Se verificó TypeScript con `npm run typecheck`. Las consultas, RLS, RPC, transf
 
 El panel tiene navegación lateral con sección activa y menú plegable en celular. El resumen conserva las métricas reales e incorpora accesos rápidos. La gestión de cursos usa tarjetas con módulos/clases, búsqueda por título y filtro por estado. El formulario separa presentación, aprendizaje y venta, genera una URL editable y conserva los campos al cambiar de paso; los nuevos cursos comienzan como borradores.
 
-El editor permite ir directamente a información, temario/archivos y portada/publicación. La lista de preparación muestra portada, clases y videos listos sin presentar estos indicadores como una validación del proveedor. Las cargas permiten elegir o arrastrar archivos, muestran nombre/tamaño y mantienen confirmación, progreso y estado de procesamiento.
+El editor permite ir directamente a información, temario/archivos y portada/publicación. La lista de preparación muestra portada, clases y videos vinculados sin presentar estos indicadores como una validación del proveedor. YouTube es la opción principal; la carga a Cloudflare Stream permanece en un desplegable como alternativa. Las cargas permiten elegir o arrastrar archivos, muestran nombre/tamaño y mantienen confirmación, progreso y estado de procesamiento.
 
 `/admin/configuracion` muestra la disponibilidad de configuración de los servicios sin exponer sus credenciales. No sustituye las pruebas integrales.
 

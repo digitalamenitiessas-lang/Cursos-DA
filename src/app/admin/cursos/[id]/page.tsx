@@ -17,6 +17,7 @@ import { CourseForm } from '@/components/admin/course-form';
 import { ConfirmSubmit } from '@/components/admin/confirm-submit';
 import { AdminNotice } from '@/components/admin/notice';
 import { UploadControl } from '@/components/admin/upload-control';
+import { LessonVideoControl } from '@/components/admin/lesson-video-control';
 import { moveContent, saveLesson, saveModule, setCourseStatus } from '../../actions';
 import { z } from 'zod';
 import { allAdminRows } from '../../data';
@@ -71,9 +72,9 @@ export default async function CourseEditor({
       supabase.from('courses').select('*').eq('id', id).maybeSingle(),
       allAdminRows<Module>('modules', '*', { course_id: id }, 'position'),
       allAdminRows<Lesson>('lessons', '*', { course_id: id }, 'position'),
-      allAdminRows<{ lesson_id: string; status: string }>(
+      allAdminRows<{ lesson_id: string; status: string; stream_uid: string }>(
         'lesson_videos',
-        'lesson_id,status,lessons!inner(course_id)',
+        'lesson_id,status,stream_uid,lessons!inner(course_id)',
         { 'lessons.course_id': id },
         'lesson_id',
       ),
@@ -155,7 +156,7 @@ export default async function CourseEditor({
                   done: lessons.length > 0,
                 },
                 {
-                  label: `${videos.filter((video) => video.status === 'ready').length} de ${lessons.length} videos listos`,
+                  label: `${videos.filter((video) => video.status === 'ready').length} de ${lessons.length} videos vinculados`,
                   done:
                     lessons.length > 0 &&
                     videos.filter((video) => video.status === 'ready').length === lessons.length,
@@ -168,7 +169,7 @@ export default async function CourseEditor({
               ))}
             </ul>
             <p className="text-xs text-slate-500">
-              Antes de publicar, revisá que todas las clases tengan su video listo.
+              Antes de publicar, probá la reproducción de los videos de cada clase.
             </p>
             <form action={setCourseStatus}>
               <input type="hidden" name="course_id" value={id} />
@@ -332,12 +333,13 @@ export default async function CourseEditor({
                           <ConfirmSubmit>Guardar clase</ConfirmSubmit>
                         </form>
                         <div className="space-y-4">
-                          <UploadControl
-                            kind="video"
-                            lessonId={lesson.id}
-                            initialStatus={
-                              videos?.find((video) => video.lesson_id === lesson.id)?.status
+                          <LessonVideoControl
+                            key={
+                              videos.find((video) => video.lesson_id === lesson.id)?.stream_uid ||
+                              lesson.id
                             }
+                            lessonId={lesson.id}
+                            initialVideo={videos.find((video) => video.lesson_id === lesson.id)}
                           />
                           <UploadControl kind="resource" lessonId={lesson.id} />
                           {resources
