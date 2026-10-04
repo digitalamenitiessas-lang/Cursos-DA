@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import * as tus from 'tus-js-client';
 import { UploadCloud, RefreshCw, FileCheck2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { coverContentType, coverFileError } from '@/lib/media/cover';
 
 export function UploadControl({
   kind,
@@ -37,8 +38,18 @@ export function UploadControl({
     [],
   );
   function selectFile(candidate: File | null) {
+    if (busy) return;
     setFailed(false);
     setMessage('');
+    if (candidate && kind === 'cover') {
+      const error = coverFileError(candidate);
+      if (error) {
+        setFailed(true);
+        setMessage(error);
+        setFile(null);
+        return;
+      }
+    }
     if (
       candidate &&
       kind !== 'video' &&
@@ -50,6 +61,7 @@ export function UploadControl({
       return;
     }
     setFile(candidate);
+    if (candidate && kind === 'cover') void upload(candidate);
   }
   async function checkStatus() {
     if (!lessonId) return;
@@ -82,8 +94,8 @@ export function UploadControl({
     }, 12000);
     return () => clearInterval(timer); /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [status, busy, kind, lessonId]);
-  async function upload() {
-    if (!file) return;
+  async function upload(selectedFile = file) {
+    if (!selectedFile || busy) return;
     if (preview) {
       setMessage('Vista de diseño: ingresá como administrador para subir archivos.');
       setFailed(false);
@@ -98,9 +110,13 @@ export function UploadControl({
     )
       return;
     setBusy(true);
-    setMessage('');
+    setMessage(kind === 'cover' ? 'Guardando la portada…' : '');
     setFailed(false);
     setProgress(0);
+    const contentType =
+      kind === 'cover' ? coverContentType(selectedFile.name, selectedFile.type) : selectedFile.type;
+    const materialTitle =
+      kind === 'resource' ? (title || selectedFile.name).slice(0, 180) : undefined;
     try {
       const response = await fetch('/api/admin/uploads', {
         method: 'POST',
@@ -109,21 +125,21 @@ export function UploadControl({
           kind,
           courseId,
           lessonId,
-          fileName: file.name,
-          contentType: file.type,
-          fileSize: file.size,
-          title: title || file.name,
+          fileName: selectedFile.name,
+          contentType,
+          fileSize: selectedFile.size,
+          title: materialTitle,
         }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'No se pudo autorizar la carga.');
       if (kind === 'video') {
         await new Promise<void>((resolve, reject) => {
-          const upload = new tus.Upload(file, {
+          const upload = new tus.Upload(selectedFile, {
             uploadUrl: data.uploadURL,
             chunkSize: 50 * 1024 * 1024,
             retryDelays: [0, 3000, 5000, 10000, 20000],
-            metadata: { name: file.name, filetype: file.type },
+            metadata: { name: selectedFile.name, filetype: contentType },
             onError: reject,
             onProgress: (uploaded, total) => setProgress(Math.round((uploaded / total) * 100)),
             onSuccess: () => resolve(),
@@ -140,8 +156,8 @@ export function UploadControl({
         const supabase = createClient();
         const result = await supabase.storage
           .from(data.bucket)
-          .uploadToSignedUrl(data.path, data.token, file, {
-            contentType: file.type || 'application/octet-stream',
+          .uploadToSignedUrl(data.path, data.token, selectedFile, {
+            contentType: contentType || 'application/octet-stream',
           });
         if (result.error) throw new Error('No se pudo transferir el archivo. Volvé a intentarlo.');
         const completion = await fetch('/api/admin/uploads/complete', {
@@ -152,7 +168,7 @@ export function UploadControl({
             courseId,
             lessonId,
             path: data.path,
-            title: title || file.name,
+            title: materialTitle,
           }),
         });
         if (!completion.ok) {
@@ -233,9 +249,9 @@ export function UploadControl({
           <strong>{file ? file.name : 'Arrastrá un archivo o elegilo desde tu equipo'}</strong>
           <small>
             {file
-              ? `${(file.size / 1024 / 1024).toFixed(1)} MB · listo para subir`
+              ? `${(file.size / 1024 / 1024).toFixed(1)} MB · ${kind === 'cover' ? (busy ? 'guardando portada' : 'pendiente de guardar') : 'listo para subir'}`
               : kind === 'cover'
-                ? 'JPG, PNG o WebP · hasta 5 MB'
+                ? 'JPG, PNG, WebP o AVIF · hasta 5 MB · se guarda al elegirla'
                 : kind === 'video'
                   ? 'Video · carga directa y privada'
                   : 'PDF, documentos y otros archivos · hasta 50 MB'}
@@ -247,7 +263,7 @@ export function UploadControl({
           aria-label={`Seleccionar ${label.toLowerCase()}`}
           accept={
             kind === 'cover'
-              ? 'image/jpeg,image/png,image/webp'
+              ? 'image/jpeg,image/png,image/webp,image/avif'
               : kind === 'video'
                 ? 'video/*'
                 : '.pdf,.zip,.txt,.csv,.docx,.xlsx,.pptx,.png,.jpg,.webp'
@@ -258,15 +274,23 @@ export function UploadControl({
         />
       </label>
       <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          className="button-secondary text-xs"
-          onClick={() => void upload()}
-          disabled={busy || !file}
-        >
-          <UploadCloud size={15} />
-          {busy ? 'Subiendo…' : 'Subir archivo'}
-        </button>
+        {(kind !== 'cover' || busy || (failed && file)) && (
+          <button
+            type="button"
+            className="button-secondary text-xs"
+            onClick={() => void upload()}
+            disabled={busy || !file}
+          >
+            <UploadCloud size={15} />
+            {busy
+              ? kind === 'cover'
+                ? 'Guardando portada…'
+                : 'Subiendo…'
+              : kind === 'cover'
+                ? 'Reintentar guardar portada'
+                : 'Subir archivo'}
+          </button>
+        )}
         {kind === 'video' && status && (
           <button
             type="button"
@@ -294,7 +318,7 @@ export function UploadControl({
         {kind === 'video'
           ? 'Carga directa a Cloudflare Stream. Mantené esta página abierta hasta que termine.'
           : kind === 'cover'
-            ? 'JPG, PNG o WebP. Recomendado: 1600 × 1000 px.'
+            ? 'La portada se guarda al elegirla. Esperá el mensaje “Portada actualizada” antes de salir. Recomendado: 1600 × 1000 px.'
             : 'Los alumnos con acceso reciben un enlace temporal para descargar.'}
       </p>
       {message && (

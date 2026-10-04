@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { assertSameOrigin, apiError, HttpError } from '@/lib/http';
 import { createDirectVideoUpload } from '@/lib/media/cloudflare';
 import { safeUploadName } from '@/lib/media/security';
+import { coverFileError } from '@/lib/media/cover';
 const schema = z.object({
   kind: z.enum(['video', 'cover', 'resource']),
   lessonId: z.uuid().optional(),
@@ -40,11 +41,12 @@ export async function POST(request: Request) {
       if (!body.courseId) throw new HttpError(400, 'Seleccioná un curso.');
       const { data } = await db.from('courses').select('id').eq('id', body.courseId).maybeSingle();
       if (!data) throw new HttpError(404, 'Curso no encontrado.');
-      if (
-        body.fileSize > 5 * 1024 ** 2 ||
-        !['image/jpeg', 'image/png', 'image/webp'].includes(body.contentType)
-      )
-        throw new HttpError(400, 'Usá una imagen JPG, PNG o WebP de hasta 5 MB.');
+      const coverError = coverFileError({
+        name: body.fileName,
+        type: body.contentType,
+        size: body.fileSize,
+      });
+      if (coverError) throw new HttpError(400, coverError);
     } else {
       if (!body.lessonId) throw new HttpError(400, 'Seleccioná una clase.');
       const { data } = await db.from('lessons').select('id').eq('id', body.lessonId).maybeSingle();

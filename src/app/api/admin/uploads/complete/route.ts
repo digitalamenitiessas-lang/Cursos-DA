@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { requireAdmin } from '@/lib/auth';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { apiError, assertSameOrigin, HttpError } from '@/lib/http';
+import { revalidatePath } from 'next/cache';
 const schema = z.object({
   kind: z.enum(['cover', 'resource']),
   courseId: z.uuid().optional(),
@@ -24,11 +25,20 @@ export async function POST(request: Request) {
       throw new HttpError(400, 'La carga no se completó. Volvé a subir el archivo.');
     if (body.kind === 'cover') {
       const { data: publicData } = db.storage.from(bucket).getPublicUrl(body.path);
-      const { error } = await db
+      const { data: course, error } = await db
         .from('courses')
         .update({ cover_url: publicData.publicUrl })
-        .eq('id', owner);
+        .eq('id', owner)
+        .select('id,cover_url')
+        .single();
       if (error) throw error;
+      if (!course?.cover_url)
+        throw new HttpError(404, 'No pudimos guardar la portada en el curso.');
+      revalidatePath(`/admin/cursos/${owner}`);
+      revalidatePath('/admin/cursos');
+      revalidatePath('/cursos');
+      revalidatePath('/cursos/[slug]', 'page');
+      revalidatePath('/');
     } else {
       const { error } = await db.from('resources').upsert(
         {

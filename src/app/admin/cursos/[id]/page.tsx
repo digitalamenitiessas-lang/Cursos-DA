@@ -123,7 +123,7 @@ export default async function CourseEditor({
           className="studio-editor-anchor studio-editor-general panel p-6 md:p-8"
         >
           <h2 className="section-heading mb-6">Información general</h2>
-          <CourseForm course={course} />
+          <CourseForm key={`${id}:${course.status}`} course={course} />
         </section>
         <aside id="curso-portada" className="studio-editor-anchor space-y-5">
           <div className="panel p-5">
@@ -141,8 +141,11 @@ export default async function CourseEditor({
           <div className="panel space-y-4 p-5">
             <h2 className="font-medium">Disponibilidad</h2>
             <p className="text-sm leading-relaxed text-slate-400">
-              Un curso publicado aparece en el catálogo. Archivar detiene las ventas y mantiene el
-              acceso de sus alumnos.
+              {course.status === 'draft'
+                ? 'Este curso está en borrador: todavía no aparece en la academia. Publicalo cuando esté preparado.'
+                : course.status === 'published'
+                  ? 'Este curso está publicado y aparece en el catálogo de la academia.'
+                  : 'Este curso está archivado: no aparece en el catálogo, pero sus alumnos conservan el acceso.'}
             </p>
             <ul className="studio-readiness" aria-label="Preparación del curso">
               {[
@@ -171,6 +174,30 @@ export default async function CourseEditor({
             <p className="text-xs text-slate-500">
               Antes de publicar, probá la reproducción de los videos de cada clase.
             </p>
+            {course.status !== 'archived' && (
+              <form action={setCourseStatus}>
+                <input type="hidden" name="course_id" value={id} />
+                <input
+                  type="hidden"
+                  name="status"
+                  value={course.status === 'published' ? 'draft' : 'published'}
+                />
+                <ConfirmSubmit
+                  className={
+                    course.status === 'published' ? 'button-secondary w-full' : 'button w-full'
+                  }
+                >
+                  {course.status === 'published'
+                    ? 'Volver a borrador'
+                    : 'Publicar curso en la academia'}
+                </ConfirmSubmit>
+              </form>
+            )}
+            {course.status === 'published' && (
+              <Link href={`/cursos/${course.slug}`} className="button-secondary w-full">
+                Ver curso en la academia
+              </Link>
+            )}
             <form action={setCourseStatus}>
               <input type="hidden" name="course_id" value={id} />
               <input

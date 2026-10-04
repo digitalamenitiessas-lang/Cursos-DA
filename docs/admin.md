@@ -6,6 +6,7 @@ El panel está en `/admin`. Todas sus páginas verifican sesión, correo verific
 
 - En **Cursos → Crear curso** se guarda título, URL, descripción, objetivos, requisitos, nivel, instructor, precio ARS y estado. Los precios se convierten en centavos enteros y se validan también en el servidor.
 - Publicado permite la venta. Borrador permite trabajar sin aparecer en el catálogo. Archivado retira el curso de la venta y conserva contenido, progreso y accesos anteriores.
+- El bloque **Disponibilidad** muestra el estado guardado y permite **Publicar curso en la academia** o **Volver a borrador** directamente. El formulario general se reinicia al cambiar el estado para que una edición posterior no restaure una disponibilidad anterior.
 - Cada módulo y clase se guarda por separado. Las flechas cambian el orden mediante una transacción que verifica el conjunto completo de IDs. No hay límite de clases impuesto por la aplicación; los listados internos se leen por páginas para superar el límite de respuesta por defecto de Supabase.
 - No se ofrece eliminación irreversible de contenido vendido.
 - Una clase puede habilitarse como muestra pública; la casilla explica que su video queda disponible sin compra.
@@ -13,6 +14,7 @@ El panel está en `/admin`. Todas sus páginas verifican sesión, correo verific
 - Subir los videos a YouTube como **ocultos/no listados**, con inserción permitida. Los videos privados no sirven como acceso automático para todos los alumnos. Un enlace oculto puede compartirse y verse fuera de la plataforma; el sistema protege el acceso al aula y la entrega inicial del identificador, no el enlace una vez que el alumno lo conoce.
 - La duración de YouTube se carga manualmente en la clase: usar la duración real o dejar 0 hasta conocerla. El progreso mantiene el límite existente de duración configurada. Guardar un enlace no confirma que el video exista o permita inserción: comprobarlo con la vista previa. Reemplazar un video requiere confirmación.
 - Las portadas y materiales se transfieren desde el navegador a Supabase Storage con una autorización temporal; el backend confirma que el archivo existe antes de guardar la portada o el recurso. Los videos viajan directamente a Cloudflare Stream mediante TUS, con progreso y reintentos. No pasan por el servidor de Next.js.
+- La portada se guarda automáticamente al elegirla o arrastrarla. Esperar **Portada actualizada** antes de salir. Se aceptan JPG, PNG, WebP y AVIF de hasta 5 MB, también cuando el navegador no informa el MIME y la extensión es reconocida. Los materiales y videos conservan el botón de carga. Al finalizar, se comprueba que la portada quedó asociada a un curso existente y se invalidan las vistas del editor y catálogo.
 - El panel consulta el estado del video cada 12 segundos durante el procesamiento. Mantener abierta la página hasta que termine la carga; después, el procesamiento continúa en Cloudflare. Hay actualización manual del estado.
 
 ## Alumnos y auditoría

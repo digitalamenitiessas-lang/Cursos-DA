@@ -1,5 +1,12 @@
 # Registro de verificación — 29 de septiembre de 2026
 
+## Portadas y publicación — 4 de octubre de 2026
+
+- El curso informado por el propietario estaba en `draft`, con `cover_url` vacío y sin archivos bajo su carpeta de portadas. Sus datos se conservaron.
+- Portadas guardadas al elegir/arrastrar el archivo, con estado y errores visibles, soporte AVIF y detección de MIME por extensión cuando el navegador no lo informa. Se verifica la fila actualizada y se invalidan las vistas afectadas. Botón de publicación en Disponibilidad y sincronización del formulario con el estado guardado.
+- Prueba directa contra Supabase real: URL de carga firmada, transferencia con clave pública, consulta de metadata, persistencia de `cover_url` en un borrador temporal, nueva lectura de la fila y URL pública HTTP 200. El borrador no era visible por el cliente anónimo. El curso y la imagen de prueba se eliminaron al finalizar; no se publicaron cursos de prueba.
+- `npm test`: 32 pruebas aprobadas, incluyendo límites/formato de portadas. Compilación y TypeScript aprobados. La inspección de la sesión local desde navegador volvió a ser rechazada por una preferencia guardada; no se usaron otras superficies para eludirla. La prueba directa de Supabase no sustituye la comprobación autenticada del formulario en navegador.
+
 ## Videos de YouTube — 4 de octubre de 2026
 
 - Editor de clases con enlace de YouTube, confirmación de reemplazo y vista previa autenticada. Cloudflare Stream conserva la carga de archivos como alternativa. Sin migraciones adicionales.
