@@ -1,7 +1,10 @@
 import { z } from 'zod';
 export const credentialsSchema = z.object({
   email: z.email('Ingresá un correo válido.').max(254),
-  password: z.string().min(8, 'Usá al menos 8 caracteres.').max(128),
+  password: z
+    .string()
+    .min(1, 'Ingresá tu contraseña.')
+    .max(128, 'Usá una contraseña de hasta 128 caracteres.'),
 });
 
 /** Keep authentication redirects on this origin, including encoded path variants. */

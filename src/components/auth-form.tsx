@@ -47,10 +47,9 @@ export function AuthForm({
             type="password"
             name="password"
             required
-            minLength={8}
             maxLength={128}
             autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
-            placeholder="Al menos 8 caracteres"
+            placeholder={mode === 'update' ? 'Tu nueva contraseña' : 'Tu contraseña'}
           />
         </label>
       )}

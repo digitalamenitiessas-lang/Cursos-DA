@@ -36,15 +36,16 @@ test('external, protocol-relative, encoded-control and malformed login redirects
   assert.equal(safeNext('https://evil.test', '/ingresar'), '/ingresar');
 });
 
-test('credentials reject malformed email and password bounds', () => {
-  assert.equal(
-    credentialsSchema.safeParse({ email: 'alumno@example.test', password: 'test-password' })
-      .success,
-    true,
-  );
+test('credentials allow short passwords and reject empty, oversized or malformed input', () => {
+  for (const password of ['a', 'short', '1234567', 'test-password', 'a'.repeat(128)]) {
+    assert.equal(
+      credentialsSchema.safeParse({ email: 'alumno@example.test', password }).success,
+      true,
+    );
+  }
   for (const credentials of [
     { email: 'not-an-email', password: 'test-password' },
-    { email: 'a@example.test', password: 'short' },
+    { email: 'a@example.test', password: '' },
     { email: 'a@example.test', password: 'a'.repeat(129) },
   ]) {
     assert.equal(credentialsSchema.safeParse(credentials).success, false);

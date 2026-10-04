@@ -29,7 +29,7 @@ export function AuthPage({
     update: [
       'TU CUENTA, SEGURA',
       'Elegí una nueva contraseña.',
-      'Usá al menos 8 caracteres para proteger tu cuenta.',
+      'Guardá tu nueva contraseña para volver a ingresar.',
     ],
   }[mode];
   return (

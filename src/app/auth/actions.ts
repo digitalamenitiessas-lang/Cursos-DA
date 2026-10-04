@@ -26,8 +26,8 @@ export async function authenticate(_previous: AuthState, form: FormData): Promis
     };
   }
   if (mode === 'update') {
-    if (password.length < 8 || password.length > 128)
-      return { error: 'Usá una contraseña de entre 8 y 128 caracteres.' };
+    const parsedPassword = credentialsSchema.shape.password.safeParse(password);
+    if (!parsedPassword.success) return { error: parsedPassword.error.issues[0].message };
     const {
       data: { user },
     } = await db.auth.getUser();
